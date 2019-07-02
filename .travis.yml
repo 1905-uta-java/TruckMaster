@@ -2,4 +2,4 @@ language: java
 
 script:
   - mvn clean package
-  - mvn sonar:sonar -Dsonar.projectKey=TruckMaster -Dsonar.organization=1905-uta-java -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=8468528bc92a70fc964dab95b94cf3c0b91d1489
+  - mvn sonar:sonar -Dsonar.projectKey=TruckMaster -Dsonar.organization=wmagnus-github -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=8468528bc92a70fc964dab95b94cf3c0b91d1489
