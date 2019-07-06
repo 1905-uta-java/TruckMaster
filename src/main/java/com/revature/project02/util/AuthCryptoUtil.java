@@ -16,7 +16,6 @@ public class AuthCryptoUtil {
 	private static boolean initialized = false;
 
 	private static byte[] key;
-	private static byte[] prevKey;
 	
 	private static SecureRandom sr;
 	
@@ -27,7 +26,6 @@ public class AuthCryptoUtil {
 		if (!initialized)
 		{
 			key = null;
-			prevKey = null;
 			setSR();
 			setKey();
 			
@@ -42,10 +40,6 @@ public class AuthCryptoUtil {
 	
 	public static void setKey()
 	{
-		if (key != null)
-		{
-			prevKey = key;
-		}
 		key = new byte[16];
 		
 		sr.nextBytes(key);
@@ -58,6 +52,21 @@ public class AuthCryptoUtil {
 		{
 			prepadString += ' ';
 		}
+		return prepadString + unpadded;
+	}
+	
+	public static String noncePrepad(String unpadded, int blocklen)
+	{
+		String prepadString = "";
+		byte[] prepadBytes = new byte[blocklen];
+		sr.nextBytes(prepadBytes);
+		for (int iter = 0; iter < prepadBytes.length; iter++)
+		{
+			if(prepadBytes[iter] < 0x20) prepadBytes[iter] = ' ';
+		}
+		
+		prepadString = new String(prepadBytes);
+		
 		return prepadString + unpadded;
 	}
 	
@@ -103,10 +112,6 @@ public class AuthCryptoUtil {
 	{
 		try
 		{
-			
-			//Overpadding to avert the problems of unknown IV
-			encryptString = spacePrepad(encryptString, 16);
-	
 			//Adding PKCS7 Padding
 			encryptString = appendPKCS7(encryptString, 16);			
 
@@ -118,14 +123,17 @@ public class AuthCryptoUtil {
 			byte[] hmac_digest = mac.doFinal(encryptString.getBytes());
 			String hmac_phase = Base64.encodeBase64URLSafeString(hmac_digest);
 			
+			
+			//Overpadding to avert the problems of unknown IV
+			encryptString = noncePrepad(encryptString, 16);
+			
 			byte[] iv = new byte[16]; //get that nonce
 			sr.nextBytes(iv);
 			IvParameterSpec ivspec = new IvParameterSpec(iv);
-			
 			Cipher cipher = Cipher.getInstance("AES/CBC/NoPadding");
 			cipher.init(Cipher.ENCRYPT_MODE, aeskey, ivspec);
 			String aes_phase =  Base64.encodeBase64URLSafeString(cipher.doFinal(encryptString.getBytes("UTF-8")));
-						
+			
 			return aes_phase.trim() + ((Character) splitChar).toString() + hmac_phase;
 		}
 		catch(Exception e)
@@ -155,11 +163,10 @@ public class AuthCryptoUtil {
 			cipher.init(Cipher.DECRYPT_MODE, aeskey, ivspec);
 			byte[] all = cipher.doFinal(decryptData);
 			
-			byte[] toDigest = new byte[all.length];
-			for(int iter = 0; iter < all.length; iter++)
+			byte[] toDigest = new byte[all.length -16];
+			for(int iter = 16; iter < all.length; iter++)
 			{
-				if (iter < 16) toDigest[iter] = ' ';
-				else toDigest[iter] = all[iter];
+				toDigest[iter-16] = all[iter];
 			}
 			
 			byte[] hmacDigestOrig = Base64.decodeBase64(datasplit[1]);
