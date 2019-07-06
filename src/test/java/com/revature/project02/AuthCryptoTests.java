@@ -91,4 +91,5 @@ public class AuthCryptoTests {
 		String dec = AuthCryptoUtil.decrypt(enc);
 		assertTrue(toEnc.equals(dec));
 	}
+	
 }
