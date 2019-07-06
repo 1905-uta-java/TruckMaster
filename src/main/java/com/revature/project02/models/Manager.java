@@ -8,8 +8,11 @@ import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
 
+import org.springframework.stereotype.Component;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+@Component
 @Entity
 @PrimaryKeyJoinColumn(name="USER_ID")
 @JsonIgnoreProperties({"drivers", "routes"})
