@@ -39,8 +39,8 @@ public class RouteServiceImpl implements RouteService {
 			
 			for(int i = 0; i < route.getNodes().size(); i++) {
 				
-				route.getNodes().get(i).setOrder(i);
 				route.getNodes().get(i).setId(null);
+				route.getNodes().get(i).setRoute(route);
 			}
 		}
 		
