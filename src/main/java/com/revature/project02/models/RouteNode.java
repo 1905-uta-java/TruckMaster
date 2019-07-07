@@ -38,11 +38,19 @@ public class RouteNode {
 		super();
 	}
 	
-	public int getId() {
+	public RouteNode(Integer id, String location, Route route, int order) {
+		super();
+		this.id = id;
+		this.location = location;
+		this.route = route;
+		this.order = order;
+	}
+
+	public Integer getId() {
 		return id;
 	}
 	
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 	
