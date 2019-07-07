@@ -10,6 +10,12 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @JsonIgnoreProperties({"passHash"})
 public class User {
 	
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", username=" + username + ", passHash=" + passHash + ", email=" + email + ", phone="
+				+ phone + "]";
+	}
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "userSequence")
 	@SequenceGenerator(name = "userSequence", sequenceName = "SQ_USER_PK")

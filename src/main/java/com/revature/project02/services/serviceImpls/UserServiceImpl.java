@@ -3,11 +3,13 @@ package com.revature.project02.services.serviceImpls;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.revature.project02.models.User;
 import com.revature.project02.repositories.UserRepository;
 import com.revature.project02.services.UserService;
 
+@Service
 public class UserServiceImpl implements UserService {
 	
 	//class attributes

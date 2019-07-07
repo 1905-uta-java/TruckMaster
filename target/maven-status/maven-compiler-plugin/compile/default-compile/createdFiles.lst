@@ -1,1 +1,11 @@
 com\revature\project02\TruckMasterRunner.class
+com\revature\project02\models\RouteNode.class
+com\revature\project02\repositories\UserRepository.class
+com\revature\project02\models\Manager.class
+com\revature\project02\controllers\UserController.class
+com\revature\project02\models\Driver.class
+com\revature\project02\models\Route.class
+com\revature\project02\services\serviceImpls\UserServiceImpl.class
+com\revature\project02\services\UserService.class
+com\revature\project02\models\User.class
+com\revature\project02\models\Admin.class
