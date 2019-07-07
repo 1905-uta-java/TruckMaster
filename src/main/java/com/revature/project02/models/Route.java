@@ -28,7 +28,7 @@ public class Route {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "routeSequence")
 	@SequenceGenerator(name = "routeSequence", sequenceName = "SQ_ROUTE_PK")
 	@Column(name = "ROUTE_ID")
-	private Integer id = 0;
+	private Integer id;
 	
 	@Column(name = "DESCRIPTION")
 	private String description;
@@ -65,11 +65,11 @@ public class Route {
 		this.nodes = nodes;
 	}
 	
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 	
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 	
