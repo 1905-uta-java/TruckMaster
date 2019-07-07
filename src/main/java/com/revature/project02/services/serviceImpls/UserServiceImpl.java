@@ -1,6 +1,7 @@
 package com.revature.project02.services.serviceImpls;
 //imports
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,7 +35,10 @@ public class UserServiceImpl implements UserService {
 
 		@Override
 		public User getUserById(Integer id) {
-			return uRepo.getOne(id);
+			//return uRepo.getOne(id);
+			Optional<User> result = uRepo.findById(id);
+			
+			return (result.isPresent()) ? result.get():null;
 		}
 
 		@Override
