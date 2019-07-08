@@ -15,8 +15,16 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 
+<<<<<<< HEAD
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+=======
+import org.springframework.stereotype.Component;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@Component
+>>>>>>> f55dcb12ab42d21d2ec79b410a5d4304f7cda0d2
 @Entity
 @JsonIgnoreProperties({"manager", "driver"})
 public class Route {
@@ -51,11 +59,30 @@ public class Route {
 		super();
 	}
 	
+<<<<<<< HEAD
 	public int getId() {
 		return id;
 	}
 	
 	public void setId(int id) {
+=======
+	public Route(Integer id, String description, Timestamp idealStartTime, Manager manager, Driver driver,
+			List<RouteNode> nodes) {
+		super();
+		this.id = id;
+		this.description = description;
+		this.idealStartTime = idealStartTime;
+		this.manager = manager;
+		this.driver = driver;
+		this.nodes = nodes;
+	}
+	
+	public Integer getId() {
+		return id;
+	}
+	
+	public void setId(Integer id) {
+>>>>>>> f55dcb12ab42d21d2ec79b410a5d4304f7cda0d2
 		this.id = id;
 	}
 	
@@ -100,6 +127,34 @@ public class Route {
 	}
 	
 	@Override
+<<<<<<< HEAD
+=======
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Route other = (Route) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		return true;
+	}
+	
+	@Override
+>>>>>>> f55dcb12ab42d21d2ec79b410a5d4304f7cda0d2
 	public String toString() {
 		return "Route [id=" + id + ", description=" + description + ", idealStartTime=" + idealStartTime + "]";
 	}

@@ -1,21 +1,42 @@
 package com.revature.project02.models;
 
+<<<<<<< HEAD
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+=======
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
+import org.springframework.stereotype.Component;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@Component
+>>>>>>> f55dcb12ab42d21d2ec79b410a5d4304f7cda0d2
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "USERS")
 @JsonIgnoreProperties({"passHash"})
 public class User {
 	
+<<<<<<< HEAD
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", username=" + username + ", passHash=" + passHash + ", email=" + email + ", phone="
 				+ phone + "]";
 	}
 
+=======
+>>>>>>> f55dcb12ab42d21d2ec79b410a5d4304f7cda0d2
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "userSequence")
 	@SequenceGenerator(name = "userSequence", sequenceName = "SQ_USER_PK")
