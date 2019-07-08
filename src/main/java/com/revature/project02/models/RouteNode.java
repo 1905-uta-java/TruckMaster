@@ -9,16 +9,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 
-<<<<<<< HEAD
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
-=======
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Component
->>>>>>> f55dcb12ab42d21d2ec79b410a5d4304f7cda0d2
 @Entity
 @JsonIgnoreProperties({"route"})
 public class RouteNode {
@@ -43,13 +38,6 @@ public class RouteNode {
 		super();
 	}
 	
-<<<<<<< HEAD
-	public int getId() {
-		return id;
-	}
-	
-	public void setId(int id) {
-=======
 	public RouteNode(Integer id, String location, Route route, int order) {
 		super();
 		this.id = id;
@@ -63,7 +51,6 @@ public class RouteNode {
 	}
 	
 	public void setId(Integer id) {
->>>>>>> f55dcb12ab42d21d2ec79b410a5d4304f7cda0d2
 		this.id = id;
 	}
 	
@@ -90,10 +77,6 @@ public class RouteNode {
 	public void setOrder(int order) {
 		this.order = order;
 	}
-<<<<<<< HEAD
-
-	@Override
-=======
 	
 	@Override
 	public int hashCode() {
@@ -121,7 +104,6 @@ public class RouteNode {
 	}
 	
 	@Override
->>>>>>> f55dcb12ab42d21d2ec79b410a5d4304f7cda0d2
 	public String toString() {
 		return "RouteNode [id=" + id + ", location=" + location + ", route=" + route + ", order=" + order + "]";
 	}

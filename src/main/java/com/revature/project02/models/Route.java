@@ -15,16 +15,11 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 
-<<<<<<< HEAD
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
-=======
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Component
->>>>>>> f55dcb12ab42d21d2ec79b410a5d4304f7cda0d2
 @Entity
 @JsonIgnoreProperties({"manager", "driver"})
 public class Route {
@@ -59,13 +54,6 @@ public class Route {
 		super();
 	}
 	
-<<<<<<< HEAD
-	public int getId() {
-		return id;
-	}
-	
-	public void setId(int id) {
-=======
 	public Route(Integer id, String description, Timestamp idealStartTime, Manager manager, Driver driver,
 			List<RouteNode> nodes) {
 		super();
@@ -82,7 +70,6 @@ public class Route {
 	}
 	
 	public void setId(Integer id) {
->>>>>>> f55dcb12ab42d21d2ec79b410a5d4304f7cda0d2
 		this.id = id;
 	}
 	
@@ -127,8 +114,6 @@ public class Route {
 	}
 	
 	@Override
-<<<<<<< HEAD
-=======
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
@@ -154,7 +139,6 @@ public class Route {
 	}
 	
 	@Override
->>>>>>> f55dcb12ab42d21d2ec79b410a5d4304f7cda0d2
 	public String toString() {
 		return "Route [id=" + id + ", description=" + description + ", idealStartTime=" + idealStartTime + "]";
 	}
