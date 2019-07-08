@@ -10,13 +10,12 @@ import org.springframework.test.context.junit4.SpringRunner;
 import com.revature.project02.TruckMasterRunner;
 import com.revature.project02.models.User;
 import com.revature.project02.services.UserService;
-import com.revature.project02.services.serviceImpls.UserServiceImpl;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = TruckMasterRunner.class)
 public class UserTest {
 	@Autowired
-	UserService user = new UserServiceImpl();
+	private UserService user;
 	
 	@Test
 	public void updateUserTest() {
