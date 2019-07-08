@@ -43,12 +43,18 @@ public class UserServiceImpl implements UserService {
 
 		@Override
 		public User addUser(User u) {
+			//if(uRepo.existsById(u.getId())) //if the user exists then do not add
+				//return null;
+			
 			return uRepo.save(u);
 		}
 
 		@Override
 		public User updateUser(User u) {
-			return uRepo.save(u);
+			//if(uRepo.existsById(u.getId())) //if the user exists then update the user
+				return uRepo.save(u);
+			
+			//return null;
 		}
 
 		@Override
