@@ -5,6 +5,7 @@ import java.io.IOException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.project02.models.UnencryptedAuthenticationToken;
+import com.revature.project02.models.User;
 
 public class AuthTokenUtil {
 
@@ -54,4 +55,38 @@ public class AuthTokenUtil {
 		return false;
 	}
 
+	public static boolean baseAuthenticate(UnencryptedAuthenticationToken uat, User user, String ip)
+	{
+		if (!uat.getUserId().equals(user.getId())) return false;
+		// allowing way to bypass ip check, since APPARENTLY angular can't give me an IP the way I want
+		if (!"".equals(ip) && !uat.getIp().equals(ip)) return false; 
+		if (!uat.getRole().equalsIgnoreCase(user.getClass().toString())) return false;
+		if (!uat.getUsername().equals(user.getUsername())) return false;
+		if (authTokenTimedOut(uat)) return false;
+		
+		return true;
+	}
+	
+	//Man, I hope nobody moves these classes.
+	public static boolean adminAuthenticate(UnencryptedAuthenticationToken uat, User user, String ip)
+	{
+		if(!baseAuthenticate(uat,user,ip)) return false;
+		if (!"class com.revature.project02.models.Admin".equals(user.getClass().toString())) return false;
+		return true;
+	}
+	
+	public static boolean managerAuthenticate(UnencryptedAuthenticationToken uat, User user, String ip)
+	{
+		if(!baseAuthenticate(uat,user,ip)) return false;
+		if (!"class com.revature.project02.models.Manager".equals(user.getClass().toString())) return false;
+		return true;
+	}
+	
+	public static boolean driverAuthenticate(UnencryptedAuthenticationToken uat, User user, String ip)
+	{
+		if(!baseAuthenticate(uat,user,ip)) return false;
+		if (!"class com.revature.project02.models.Driver".equals(user.getClass().toString())) return false;
+		return true;
+	}
+	
 }
