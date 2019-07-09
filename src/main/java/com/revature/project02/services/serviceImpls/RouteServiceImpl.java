@@ -38,10 +38,15 @@ public class RouteServiceImpl implements RouteService {
 		
 		if(route.getNodes() != null && !route.getNodes().isEmpty()) {
 			
-			for(int i = 0; i < route.getNodes().size(); i++) {
+			List<RouteNode> nodes = route.getNodes();
+			
+			for(int i = 0; i < nodes.size(); i++) {
 				
-				route.getNodes().get(i).setOrder(i);
-				route.getNodes().get(i).setId(null);
+				// this sets the nodes' id null to make sure they don't
+				// override an existing node in the db
+				nodes.get(i).setId(null);
+				nodes.get(i).setRoute(route);
+				nodes.get(i).setOrder(i);
 			}
 		}
 		
@@ -52,8 +57,17 @@ public class RouteServiceImpl implements RouteService {
 	public Route getRoute(Integer routeId) {
 		
 		Optional<Route> result = routeRepo.findById(routeId);
-		return (result.isPresent()) ? result.get() : null;
+		if(!result.isPresent())
+			return null;
+		
+		Route route = result.get();
+		
+		if(route.getNodes() != null && !route.getNodes().isEmpty())
+			route.getNodes().sort((node1, node2) -> node1.getOrder() - node2.getOrder());
+		
+		return route;
 	}
+	
 	/*
 	 * returns the new state of the edited route
 	 * or null if the route doesn't exist
@@ -64,12 +78,10 @@ public class RouteServiceImpl implements RouteService {
 		if(route == null)
 			return null;
 		
-		Optional<Route> result = routeRepo.findById(route.getId());
+		Route existingRoute = getRoute(route.getId());
 		
-		if(!result.isPresent())
+		if(existingRoute == null)
 			return null;
-		
-		Route existingRoute = result.get();
 		
 		// this code is meant to remove nodes that are no longer used by this route
 		// without this code, it would be impossible to remove nodes from a route
@@ -92,9 +104,13 @@ public class RouteServiceImpl implements RouteService {
 		
 		// make sure the links are maintained for each node
 		if(route.getNodes() != null && !route.getNodes().isEmpty()) {
-			for(int i = 0; i < route.getNodes().size(); i++) {
-				route.getNodes().get(i).setRoute(route);
-				route.getNodes().set(i, nodeRepo.save(route.getNodes().get(i)));
+			
+			List<RouteNode> nodes = route.getNodes();
+			
+			for(int i = 0; i < nodes.size(); i++) {
+				nodes.get(i).setRoute(route);
+				nodes.get(i).setOrder(i);
+				nodes.set(i, nodeRepo.save(route.getNodes().get(i)));
 			}
 		}
 		
