@@ -33,7 +33,7 @@ public class AuthTokenUtilTests {
 	@Test
 	public void authTokenTimedOutOld()
 	{
-		UnencryptedAuthenticationToken uat = new UnencryptedAuthenticationToken(25, "username", "manager", "0:0:0:0:0:1", System.currentTimeMillis()-AuthTokenUtil.MAX_TOKEN_LIFETIME_MILLI);
+		UnencryptedAuthenticationToken uat = new UnencryptedAuthenticationToken(25, "username", "manager", "0:0:0:0:0:1", System.currentTimeMillis()-AuthTokenUtil.MAX_TOKEN_LIFETIME_MILLI-1);
 		assertTrue(AuthTokenUtil.authTokenTimedOut(uat));
 	}
 	
