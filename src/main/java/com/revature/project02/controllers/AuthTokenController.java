@@ -5,6 +5,7 @@ import java.io.Serializable;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -19,6 +20,7 @@ import com.revature.project02.util.AuthTokenUtil;
 import com.revature.project02.util.HashUtil;
 import com.revature.project02.util.ValidationUtil;
 
+@CrossOrigin({"*"})
 @RestController
 @RequestMapping("/authenticate")
 public class AuthTokenController {
@@ -51,7 +53,7 @@ public class AuthTokenController {
 		if(user == null) throw new InvalidAuthenticationException("Invalid username or username/password pair.");
 		
 		String hashpass = HashUtil.hashStr(password);
-		if(user.getPassHash() != hashpass) throw new InvalidAuthenticationException("Invalid username or username/password pair.");
+		if(user.getPassHash()==null || !user.getPassHash().contentEquals(hashpass)) throw new InvalidAuthenticationException("Invalid username or username/password pair.");
 		
 		String ip = request.getRemoteAddr(); // NOT TO BE CHECKED, ANGULAR DOES NOT GIVE CLIENT END IP
 		
