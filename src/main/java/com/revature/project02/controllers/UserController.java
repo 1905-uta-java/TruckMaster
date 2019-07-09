@@ -2,6 +2,7 @@ package com.revature.project02.controllers;
 //imports
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -17,6 +18,7 @@ import com.revature.project02.services.UserService;
  * @author mattd
  * @version 07.06.2019
  */
+@CrossOrigin(origins = {"*"})
 @RestController
 @RequestMapping("/profile-user")
 public class UserController { //class header
@@ -42,7 +44,7 @@ public class UserController { //class header
 	 */
 	@PutMapping("/{id}")
 	public User updateUser(@PathVariable("id") Integer id, @RequestBody User u) {
-		u.setId(id);
+		u.setId(id); //get the id for the user being updated
 		return userService.updateUser(u);
 	}
 	
