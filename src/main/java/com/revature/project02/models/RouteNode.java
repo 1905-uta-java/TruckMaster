@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Component
 @Entity
-@JsonIgnoreProperties({"route"})
+@JsonIgnoreProperties({"route", "order"})
 public class RouteNode {
 	
 	@Id
