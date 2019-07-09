@@ -10,13 +10,13 @@ import com.revature.project02.models.User;
 public interface DriverService {
 	
 	public List<Driver> getAllDrivers();
+	public List<Driver> getDriversByManager(Manager manager);
 	public Driver getDriverById(Integer id);
+	public Driver getDriverByUsername(String username);
+	public Driver addDriver(Driver d, Manager manager);
 	public Driver addDriver(Driver d);
-	public Driver updateDriver(Driver d);
-	public boolean deleteDriver(Driver d);
-	public List<Manager> getManagers();
-	public Manager getManager();
-	public List<Route> getRoutes();
-	public Route getRoute(Integer routeId);
+	public Driver updateDriver(Driver driver);
+	public boolean mutchDriver(Driver d);
+	public boolean mutchDriver(Integer id);
 	
 }

@@ -31,9 +31,14 @@ public class UserController { //class header
 	 * @param id - Integer representation of the user id (found in the uri)
 	 * @return - JSON object representing the user
 	 */
-	@GetMapping(value="/{id}")
+	@GetMapping(value="/userid-{id}")
 	public User getUserProfile(@PathVariable("id") Integer id) {
 		return userService.getUserById(id);
+	}
+	
+	@GetMapping(value="/username-{username}")
+	public User getUserProfile(@PathVariable("username") String username) {
+		return userService.getUserByName(username);
 	}
 	
 	/**
@@ -42,7 +47,7 @@ public class UserController { //class header
 	 * @param u - User object containing the updated information for the specified user
 	 * @return - returns the newly updated user
 	 */
-	@PutMapping("/{id}")
+	@PutMapping("/userid-{id}")
 	public User updateUser(@PathVariable("id") Integer id, @RequestBody User u) {
 		u.setId(id); //get the id for the user being updated
 		return userService.updateUser(u);
