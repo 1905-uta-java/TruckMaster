@@ -57,7 +57,13 @@ public class RouteController {
 	@PutMapping
 	public ResponseEntity<Route> updateRoute(@RequestBody Route route) {
 		
+		if(route == null)
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		
 		Route updatedRoute = routeService.editRoute(route);
+		
+		if(updatedRoute == null)
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		
 		return new ResponseEntity<>(updatedRoute, HttpStatus.OK);
 	}
