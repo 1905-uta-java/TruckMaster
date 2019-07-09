@@ -10,12 +10,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.revature.project02.exceptions.BadRequestException;
 import com.revature.project02.exceptions.InvalidAuthenticationException;
 import com.revature.project02.models.UnencryptedAuthenticationToken;
 import com.revature.project02.models.User;
 import com.revature.project02.services.UserService;
 import com.revature.project02.util.AuthTokenUtil;
 import com.revature.project02.util.HashUtil;
+import com.revature.project02.util.ValidationUtil;
 
 @RestController
 @RequestMapping("/authenticate")
@@ -43,13 +45,13 @@ public class AuthTokenController {
 	public AuthWrapper getAuthenticationToken(@RequestParam(name="username") String username, @RequestParam(name="password") String password, HttpServletRequest request)
 	{
 		System.out.println("AUTH TOKEN GENERATE ATTEMPT: username:"+username+",password:"+password);
-		
+		if (!ValidationUtil.validUsername(username) || !ValidationUtil.validPassword(password)) throw new BadRequestException("Invalid input.");
 		
 		User user = userService.getUserByName(username);
-		if(user == null) throw new InvalidAuthenticationException("Invalid user/pass.");
+		if(user == null) throw new InvalidAuthenticationException("Invalid username or username/password pair.");
 		
 		String hashpass = HashUtil.hashStr(password);
-		if(user.getPassHash() != hashpass) throw new InvalidAuthenticationException("Invalid user/pass.");
+		if(user.getPassHash() != hashpass) throw new InvalidAuthenticationException("Invalid username or username/password pair.");
 		
 		String ip = request.getRemoteAddr(); // NOT TO BE CHECKED, ANGULAR DOES NOT GIVE CLIENT END IP
 		
