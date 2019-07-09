@@ -5,7 +5,6 @@ public class ValidationUtil {
 	public static final int MIN_PASSWORD_LENGTH = 6;
 	public static final int MIN_USERNAME_LENGTH = 6;
 	public static final int MAX_USERNAME_LENGTH = 32;
-	public static final int MIN_NAME_LENGTH     = 2;
 	public static final int MIN_EMAIL_SEGMENT_LENGTH = 1;
 	public static final int MAX_EMAIL_LENGTH = 32;
 	
