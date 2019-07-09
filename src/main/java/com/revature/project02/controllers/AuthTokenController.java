@@ -53,7 +53,7 @@ public class AuthTokenController {
 		if(user == null) throw new InvalidAuthenticationException("Invalid username or username/password pair.");
 		
 		String hashpass = HashUtil.hashStr(password);
-		if(user.getPassHash()==null || !user.getPassHash().contentEquals(hashpass)) throw new InvalidAuthenticationException("Invalid username or username/password pair.");
+		if(user.getPassHash()==null || !user.getPassHash().equalsIgnoreCase(hashpass)) throw new InvalidAuthenticationException("Invalid username or username/password pair.");
 		
 		String ip = request.getRemoteAddr(); // NOT TO BE CHECKED, ANGULAR DOES NOT GIVE CLIENT END IP
 		
