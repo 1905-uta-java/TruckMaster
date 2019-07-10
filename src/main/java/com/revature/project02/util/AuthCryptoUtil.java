@@ -15,7 +15,7 @@ import org.apache.tomcat.util.codec.binary.Base64;
  * @author Wolfe Magnus <wsm@efoe.com>
  * @version 1.0
  * @since 1.0
- * Note
+ * Note that if key changes due to reinitialization, decrypt will no longer work on encrypted data encryped under the old key.
  */
 public class AuthCryptoUtil {
 
