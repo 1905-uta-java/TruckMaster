@@ -25,7 +25,7 @@ import com.revature.project02.util.ValidationUtil;
 @RequestMapping("/authenticate")
 public class AuthTokenController {
 
-	public class AuthWrapper implements Serializable{
+	public static class AuthWrapper implements Serializable{
 		
 		public static final long serialVersionUID = 1L;
 

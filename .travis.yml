@@ -1,12 +1,8 @@
 language: java
 
-addons:
-  sonarcloud:
-     organization: "1905-uta-java"
-     token:
-       secure: "WVbkBpWPqVyGLtiSU4OWO4VF6kKmfpvLE7/M0G7ELua/SL6K2FYcIUQirnyACEqysCV0VnEWG4PeUemn1gISf3+YGbExCEAFncJOv6O8/a7jI8apJrJpI+b1+jd+OnjO3Hw/lFk2/GkMxcYhvbYx3zIaGto/pJU2+JEZucAjs4p6HDzxjV43McjUinZeeds+yTfxdT/SeFBWa62gDTigoUs4AYhzavFPlSvTZoBf9oz0F9iFmGLx4tP/60EQoqC5Lk3VmFN66MqBCOtsqOdNYJ7vOsIkBTtvePMz08biLei6pTXJ8yql0ZyHgnDSByFeHYkB2Ppmgh0RCc5UMfyRAmcoiJ56l2Ie895+OAzoFFtaxb/FmXGw0Edl0cEmL37+B7yMP93JxQ5xoY4qyQjcDb3dOmCkfnf2cLI/yyvAIffhyYSN0Qs7JRwAzwjCbiVQtTxJW+VMOaT/ZmYyc0lWSROddn/Z3hUtzw1oZpoHhy5xSM3YVDgHGqCthEXniKBsECa0m3UzDUo/X3AApQNXTNkrepml/iAmDqIxGeGVW/JeBmX5ON6Frwj5a3f5TjIqoG4+JXG7oBm7rY1v8r/VcQfYhjgGPSnXTc6yb8GG9omCmWDpIN0UhHar6suertcC5l+N5DwoTfNsuCxy+sZz7mXsUthFM39mEvhjlH5xqaI="
 before_install:
-  - wget https://ojdbc-project2-avoidance.s3.us-east-2.amazonaws.com/ojdbc7-12.1.0.jar
+  - wget $OJDBC_BUCKET
   - mvn install:install-file -DgroupId=com.oracle -DartifactId=ojdbc7 -Dpackaging=jar -Dversion=12.1.0 -Dfile=ojdbc7-12.1.0.jar -DgeneratePom=true
 script:
-  - mvn clean verify sonar:sonar -Pcoverage -Dsonar.projectKey=1905-uta-java-TruckMaster
+  - mvn clean package
+  - mvn sonar:sonar -Dsonar.projectKey=TruckMaster -Dsonar.organization=wmagnus-github -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=$SONAR_TOKEN
