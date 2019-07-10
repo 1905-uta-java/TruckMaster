@@ -1,4 +1,5 @@
 package com.revature.project02.controllers;
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.revature.project02.exceptions.BadRequestException;
 import com.revature.project02.models.Driver;
 import com.revature.project02.models.Manager;
 import com.revature.project02.models.Route;
@@ -46,12 +49,19 @@ public class DriverController {//class header
 	 * @param driver - The driver information in json
 	 * @param password - String of unencrypted password for the driver
 	 * @return - json representation of the newly created driver and http status created, else failed.
-	 * @throws BadRequestException - if manager is not found or exists
+	 * @throws BadRequestException - if manager is not found or exists, or if driver could not be read.
 	 */
 	@PostMapping(value= "/add-driver-managerid-{id}")
-	public ResponseEntity<Driver> addDriver(@PathVariable("id") Integer id, @RequestParam("driver") Driver driver, 
+	public ResponseEntity<Driver> addDriver(@PathVariable("id") Integer id, @RequestParam("driver") String driverStr, 
 			@RequestParam("password")String password) {
-		
+		ObjectMapper om = new ObjectMapper();
+		Driver driver;
+		try {
+			driver = om.readValue(driverStr, Driver.class);
+		} catch (IOException e) {
+			e.printStackTrace();
+			throw new BadRequestException("Driver could not be instantiated. Check Json.");
+		}
 		Manager temp = mService.getManagerById(id);
 		return new ResponseEntity<>(dService.addDriver(driver, temp, password), HttpStatus.CREATED);
 	}
