@@ -14,7 +14,7 @@ import com.revature.project02.services.UserService;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = TruckMasterRunner.class)
-public class UserTest {
+public class UserServiceTest {
 	@Autowired
 	private UserService user;
 	

@@ -6,6 +6,8 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.revature.project02.exceptions.BadRequestException;
+import com.revature.project02.exceptions.ResourceNotFoundException;
 import com.revature.project02.models.User;
 import com.revature.project02.repositories.UserRepository;
 import com.revature.project02.services.UserService;
@@ -51,8 +53,17 @@ public class UserServiceImpl implements UserService {
 
 		@Override
 		public User updateUser(User u) {
-			//if(uRepo.existsById(u.getId())) //if the user exists then update the user
-				return uRepo.save(u);
+			//if the user exists then update the user
+			if(u == null)
+				throw new BadRequestException("Empty user");
+			Optional<User> u2 = uRepo.findById(u.getId());
+			if(!u2.isPresent())
+				throw new ResourceNotFoundException("No such user");
+			
+			User u3 = u2.get();
+			u3.setEmail(u.getEmail());
+			u3.setPhone(u.getPhone());
+			return uRepo.save(u3);
 			
 			//return null;
 		}

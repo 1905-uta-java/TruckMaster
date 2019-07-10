@@ -30,6 +30,7 @@ public class Manager extends User {
 	
 	public Manager() {
 		super();
+		userType = "MANAGER";
 	}
 	
 	public List<Driver> getDrivers() {
