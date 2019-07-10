@@ -24,6 +24,8 @@ public class ManagerServiceTest {
 		Manager manager = new Manager();
 		manager.setUsername("johnny");
 		
+		mService.addManager(manager);
+		
 		Manager manager2 = mService.getManagerByUsername("johnny");
 		
 		mService.deleteManager(manager);
