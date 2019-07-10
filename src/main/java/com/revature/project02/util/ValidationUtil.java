@@ -7,8 +7,57 @@ public class ValidationUtil {
 	public static final int MAX_USERNAME_LENGTH = 32;
 	public static final int MIN_EMAIL_SEGMENT_LENGTH = 1;
 	public static final int MAX_EMAIL_LENGTH = 32;
+	public static final int PHONE_MIN_LENGTH = 10;
+	public static final int PHONE_MAX_LENGTH = 10;
 	
+	private static final String PHONE_DIVIDERS=" .-";
+	private static final String DIGITS = "0123456789";
 	private static final String EMAILCHARS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVVWXYZ0123456789.";
+	
+	//Does not account for international codes. Do not start with a divider. Start with a digit or (.
+	public static boolean validPhone(String phone)
+	{		
+		int true_len = 0;
+		boolean paren = false;
+		int iter = 0;
+		
+		//Parenthesis Handling
+		if (phone.charAt(0) == '(') 
+		{
+			iter = 1;
+			paren = true;
+		}
+		while (paren == true && iter < 5 && iter < phone.length())
+		{
+			if(DIGITS.contains(((Character)phone.charAt(iter)).toString())) true_len ++;
+			else if(phone.charAt(iter) == ')')
+			{
+				if (true_len != 3) return false;
+				paren = false;
+			}
+			iter ++;
+		}
+		if (paren == true) return false;
+		
+		//Post-parenthesis handling
+		while(iter < phone.length())
+		{
+			if(DIGITS.contains(((Character)phone.charAt(iter)).toString()))
+			{
+				true_len++;
+				iter++;
+			}
+			else if (iter > 0 && !PHONE_DIVIDERS.contains(((Character)phone.charAt(iter - 1)).toString())
+					&& PHONE_DIVIDERS.contains(((Character)phone.charAt(iter)).toString()))
+			{
+				iter++;
+			}
+			else return false;
+		}
+		
+		if(true_len < PHONE_MIN_LENGTH || true_len > PHONE_MAX_LENGTH) return false;
+		return true;
+	}
 	
 	public static boolean validEmail(String email)
 	{
