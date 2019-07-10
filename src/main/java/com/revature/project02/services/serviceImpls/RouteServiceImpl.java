@@ -8,6 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.revature.project02.exceptions.BadRequestException;
+import com.revature.project02.exceptions.ResourceNotFoundException;
+import com.revature.project02.models.Driver;
+import com.revature.project02.models.Manager;
 import com.revature.project02.models.Route;
 import com.revature.project02.models.RouteNode;
 import com.revature.project02.repositories.RouteNodeRepository;
@@ -141,4 +144,24 @@ public class RouteServiceImpl implements RouteService {
 		
 		return null;
 	}
+
+	@Override
+	public List<Route> getRoutesByManager(Manager manager) {
+		List<Route> temp = routeRepo.getRoutesByManager(manager);
+		if(temp == null)
+			throw new ResourceNotFoundException("No routes available");
+		return temp;
+	}
+
+	@Override
+	public List<Route> getRoutesByDriver(Driver driver) {
+		List<Route> temp = routeRepo.getRoutesByDriver(driver);
+		if(temp == null)
+			throw new ResourceNotFoundException("No routes available");
+		return temp;
+	}
+
+	@Override
+	public List<Route> getAllRoutes() {
+		return routeRepo.findAll();	}
 }

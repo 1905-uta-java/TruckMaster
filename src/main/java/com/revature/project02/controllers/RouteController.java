@@ -1,5 +1,7 @@
 package com.revature.project02.controllers;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,12 +16,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.project02.models.Route;
+import com.revature.project02.services.DriverService;
+import com.revature.project02.services.ManagerService;
 import com.revature.project02.services.RouteService;
 
 @CrossOrigin(origins = {"*"})
 @RestController
 @RequestMapping("/routes")
 public class RouteController {
+	@Autowired
+	private ManagerService mService;
+	
+	@Autowired
+	private DriverService dService;
 	
 	@Autowired
 	private RouteService routeService;
@@ -77,5 +86,32 @@ public class RouteController {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		
 		return new ResponseEntity<>(route, HttpStatus.OK);
+	}
+	
+	/**
+	 * Description - Get a list of all routes assigned to the driver
+	 * @param id - Integer representation of the driver's id
+	 * @return - a List of routes assigned to driver
+	 * @throws ResourceNotFoundException - if the driver has no routes.
+	 */
+	@GetMapping(value="/get-routes-driver-{id}")
+	public ResponseEntity<List<Route>> getAllRoutesForDriver(@PathVariable("id") Integer id){
+		return new ResponseEntity<>(routeService.getRoutesByDriver(dService.getDriverById(id)), HttpStatus.FOUND);
+	}
+	
+	/**
+	 * Description - Gets all routes assigned to this manager
+	 * @param id - the Integer representation of the manager's id
+	 * @return - a List of routes under this manager
+	 * @throws ResourceNotFoundException - if there are no routes under this manager or if this manager doesn't exist
+	 */
+	@GetMapping(value = "/get-all-routes+managerid-{id}")
+	public ResponseEntity<List<Route>> getAllRoutesForManager(@PathVariable("id") Integer id) {
+		return new ResponseEntity<>(routeService.getRoutesByManager(mService.getManagerById(id)), HttpStatus.FOUND);
+	}
+	
+	@GetMapping
+	public ResponseEntity<List<Route>> getAllRoutes(){
+		return new ResponseEntity<>(routeService.getAllRoutes(), HttpStatus.FOUND);
 	}
 }
