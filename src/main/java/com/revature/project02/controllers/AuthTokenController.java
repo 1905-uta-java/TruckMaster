@@ -20,7 +20,7 @@ import com.revature.project02.util.AuthTokenUtil;
 import com.revature.project02.util.HashUtil;
 import com.revature.project02.util.ValidationUtil;
 
-@CrossOrigin({"*"})
+@CrossOrigin(origins = {"*"})
 @RestController
 @RequestMapping("/authenticate")
 public class AuthTokenController {

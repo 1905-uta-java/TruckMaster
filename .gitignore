@@ -33,4 +33,4 @@ dependency-reduced-pom.xml
 
 README.html
 
-/src/logs/
+src/logs/
