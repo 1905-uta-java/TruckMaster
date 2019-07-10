@@ -1,5 +1,10 @@
 package com.revature.project02.util;
 
+/**
+ * @author Wolfe Magnus <wsm@efoe.com>
+ * @version 1.0
+ * @since 1.0
+ */
 public class ValidationUtil {
 	public static final int MAX_PASSWORD_LENGTH = 32;
 	public static final int MIN_PASSWORD_LENGTH = 6;
@@ -15,6 +20,11 @@ public class ValidationUtil {
 	private static final String EMAILCHARS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVVWXYZ0123456789.";
 	
 	//Does not account for international codes. Do not start with a divider. Start with a digit or (.
+	/**
+	 * validPhone: Determines if a phone number is valid.
+	 * @param phone - phone number to be validated
+	 * @return boolean - true if valid, false if invalid
+	 */
 	public static boolean validPhone(String phone)
 	{		
 		int true_len = 0;
@@ -59,6 +69,11 @@ public class ValidationUtil {
 		return true;
 	}
 	
+	/**
+	 * validEmail: Determines if an email is valid.
+	 * @param email - email address to validate
+	 * @return boolean - true if email is valid, false if email is invalid
+	 */
 	public static boolean validEmail(String email)
 	{
 		if (email.length() < MIN_EMAIL_SEGMENT_LENGTH*3 + 2 || email.length() > MAX_EMAIL_LENGTH) return false;
@@ -96,6 +111,11 @@ public class ValidationUtil {
 		return false;
 	}
 	
+	/**
+	 * validPassword: Determines if the password provided is valid.
+	 * @param pw - password to validate
+	 * @return boolean - true if password is valid, false if password is invalid
+	 */
 	public static boolean validPassword(String pw)
 	{
 		if (pw.length() < MIN_PASSWORD_LENGTH || pw.length() > MAX_PASSWORD_LENGTH) return false;
@@ -109,6 +129,11 @@ public class ValidationUtil {
 		return true;
 	}
 
+	/**
+	 * validUsername: Determines if the username provided is valid.
+	 * @param uid - username to validate
+	 * @return boolean - true if username is valid, false if username is invalid
+	 */
 	public static boolean validUsername(String uid)
 	{
 		if (uid.length() < MIN_USERNAME_LENGTH || uid.length() > MAX_USERNAME_LENGTH) return false;

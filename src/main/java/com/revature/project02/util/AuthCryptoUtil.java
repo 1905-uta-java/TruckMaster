@@ -11,6 +11,12 @@ import javax.crypto.spec.SecretKeySpec;
 
 import org.apache.tomcat.util.codec.binary.Base64;
 
+/**
+ * @author Wolfe Magnus <wsm@efoe.com>
+ * @version 1.0
+ * @since 1.0
+ * Note
+ */
 public class AuthCryptoUtil {
 
 	private static boolean initialized = false;
@@ -21,6 +27,9 @@ public class AuthCryptoUtil {
 	
 	private static char splitChar = ';';
 
+	/**
+	 * init: initializes the AuthCryptoUtil.
+	 */
 	public static void init()
 	{
 		if (!initialized)
@@ -33,11 +42,18 @@ public class AuthCryptoUtil {
 		}
 	}
 	
+	
+	/**
+	 * setSR: sets a fresh SecureRandom
+	 */
 	public static void setSR()
 	{
 		sr = new SecureRandom();
 	}
 	
+	/**
+	 * setKey: sets/resets the key
+	 */
 	public static void setKey()
 	{
 		key = new byte[16];
@@ -45,6 +61,13 @@ public class AuthCryptoUtil {
 		sr.nextBytes(key);
 	}
 
+	/**
+	 * @deprecated spacePrepad: Prepads a string with a block of spaces of length blocklen
+	 * Use @see AuthCryptoUtil.noncePrepad instead
+	 * @param unpadded - the unpadded string
+	 * @param blocklen - the length of the block to prepad with
+	 * @return String - the string with prepadding
+	 */
 	public static String spacePrepad(String unpadded, int blocklen)
 	{
 		String prepadString = "";
@@ -55,6 +78,12 @@ public class AuthCryptoUtil {
 		return prepadString + unpadded;
 	}
 	
+	/**
+	 * noncePrepad: Prepads a string with an extra layer of Initialization Vector, as a nonce.
+	 * @param unpadded - the string to prepad
+	 * @param blocklen - length of the block of the nonce to apply
+	 * @return String - the string with the nonce prepadding
+	 */
 	public static String noncePrepad(String unpadded, int blocklen)
 	{
 		String prepadString = "";
@@ -71,6 +100,13 @@ public class AuthCryptoUtil {
 	}
 	
 	//PKCS7 Padding magic
+	/**
+	 * appendPKCS7: Appends PKCS7 padding to a string
+	 * @param unpad - the unpadded string
+	 * @param blocklen - the block length to pad out to
+	 * @return String - Padded string
+	 * @throws BadPaddingException
+	 */
 	public static String appendPKCS7(String unpad, int blocklen) throws BadPaddingException
 	{
 		if(blocklen <= 0 || blocklen > 255) throw new javax.crypto.BadPaddingException();
@@ -93,10 +129,14 @@ public class AuthCryptoUtil {
 		return unpad + pad;
 	}
 	
-	public static String removePKCS7(String padded, int blocklen) throws BadPaddingException
+	/**
+	 * removePKCS7: Removes PKCS7 padding if it's valid. Throws BadPaddingException if it's not
+	 * @param padded - Padded string to strip down
+	 * @return String - the unpadded string
+	 * @throws BadPaddingException
+	 */
+	public static String removePKCS7(String padded) throws BadPaddingException
 	{
-		if(blocklen <= 0 || blocklen > 255 || padded.length() % blocklen != 0) throw new javax.crypto.BadPaddingException();
-
 		byte padlen = (byte) padded.charAt(padded.length()-1);
 		
 		//validate padding
@@ -108,6 +148,11 @@ public class AuthCryptoUtil {
 		return padded.substring(0,padded.length()-padlen);
 	}
 	
+	/**
+	 * encrypt: Encrypts string with HMAC using AES256.
+	 * @param encryptString - string to encrypt
+	 * @return String - base64 encoded encrypted value OR null if error occurs
+	 */
 	public static String encrypt(String encryptString)
 	{
 		try
@@ -144,6 +189,11 @@ public class AuthCryptoUtil {
 		return null;
 	}
 	
+	/**
+	 * decrypt: Decrypts the string with AES256 and verifies it against the HMAC.
+	 * @param decryptString - pair of encrypted string and the HMAC, separated by AuthCryptoUtil.splitChar in ENCRYPTED;HMAC order
+	 * @return String - decrypted string OR null if an error occured.
+	 */
 	public static String decrypt(String decryptString)
 	{
 		try {
@@ -181,7 +231,7 @@ public class AuthCryptoUtil {
 				return null;
 			}
 			
-			return new String(toDigest).trim();
+			return removePKCS7(new String(toDigest));
 		}
 		catch (Exception e)
 		{
