@@ -81,13 +81,13 @@ public class RouteServiceTests {
 		
 		List<RouteNode> nodes = new ArrayList<RouteNode>();
 		nodes.add(new RouteNode(0, "Home", route, 0));
-		nodes.add(new RouteNode(0, "Work", route, 1));
+		nodes.add(new RouteNode(0, "Work", route, 0));
 		
 		route.setNodes(nodes);
 		
 		Route savedRoute = routeService.createRoute(route);
 		
-		savedRoute.getNodes().add(new RouteNode(0, "Vacation", savedRoute, 2));
+		savedRoute.getNodes().add(new RouteNode(0, "Vacation", savedRoute, 0));
 		
 		Route updatedRoute = routeService.editRoute(savedRoute);
 		
@@ -117,8 +117,8 @@ public class RouteServiceTests {
 		
 		List<RouteNode> nodes = new ArrayList<RouteNode>();
 		nodes.add(new RouteNode(0, "Home", route, 0));
-		nodes.add(new RouteNode(0, "Work", route, 1));
-		nodes.add(new RouteNode(0, "Vacation", route, 2));
+		nodes.add(new RouteNode(0, "Work", route, 0));
+		nodes.add(new RouteNode(0, "Vacation", route, 0));
 		
 		route.setNodes(nodes);
 		
@@ -155,8 +155,8 @@ public class RouteServiceTests {
 		
 		List<RouteNode> nodes = new ArrayList<RouteNode>();
 		nodes.add(new RouteNode(0, "Home", route, 0));
-		nodes.add(new RouteNode(0, "Work", route, 1));
-		nodes.add(new RouteNode(0, "Vacation", route, 2));
+		nodes.add(new RouteNode(0, "Work", route, 0));
+		nodes.add(new RouteNode(0, "Vacation", route, 0));
 		
 		route.setNodes(nodes);
 		
