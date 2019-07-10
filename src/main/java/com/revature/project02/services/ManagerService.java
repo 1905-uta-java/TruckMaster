@@ -16,7 +16,7 @@ public interface ManagerService {
 	public Manager getManagerByRoute(Route route);
 	public Manager getManagerByDriver(Driver driver);
 	public Manager getManagerByUsername(String username);
-	public Manager addManager(Manager manager);
+	public Manager addManager(Manager manager, String password);
 	public Manager updateManager(Manager manager);
 	public boolean deleteManager(Manager manager);
 	public boolean deleteManager(Integer id);

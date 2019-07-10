@@ -6,6 +6,8 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.revature.project02.exceptions.BadRequestException;
+import com.revature.project02.exceptions.ResourceNotFoundException;
 import com.revature.project02.models.Driver;
 import com.revature.project02.models.Manager;
 import com.revature.project02.models.Route;
@@ -27,12 +29,20 @@ public class ManagerServiceImpl implements ManagerService {
 	@Override
 	public Manager getManagerById(Integer id) {
 		Optional<Manager> result = mRepo.findById(id);
-		return (result.isPresent()) ? result.get():null;
+		if(!result.isPresent())
+			throw new ResourceNotFoundException("Manager of id:" + id + " cannot be found");
+		return result.get();
 	}
 
 	@Override
 	public Manager getManagerByRoute(Route route) {
-		return mRepo.getManagerByRoutes(route);
+		if(route == null)
+			throw new BadRequestException("The route specified could not be instantiated,");
+		Manager temp = mRepo.getManagerByRoutes(route);
+		
+		if(temp == null)
+			throw new ResourceNotFoundException("This route does not have an assigned manager");
+		return temp;
 	}
 
 	@Override
@@ -41,7 +51,8 @@ public class ManagerServiceImpl implements ManagerService {
 	}
 
 	@Override
-	public Manager addManager(Manager manager) {
+	public Manager addManager(Manager manager, String password) {
+		manager.setPassHash(password);
 		return mRepo.save(manager);
 	}
 
