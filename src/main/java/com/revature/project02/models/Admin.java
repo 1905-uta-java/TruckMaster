@@ -11,5 +11,6 @@ import org.springframework.stereotype.Component;
 public class Admin extends User {
 	public Admin() {
 		super();
+		userType = "ADMIN";
 	}
 }

@@ -31,6 +31,7 @@ public class Driver extends User {
 	
 	public Driver() {
 		super();
+		userType = "DRIVER";
 	}
 	
 	public Manager getManager() {

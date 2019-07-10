@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.revature.project02.exceptions.BadRequestException;
 import com.revature.project02.models.Route;
 import com.revature.project02.models.RouteNode;
 import com.revature.project02.repositories.RouteNodeRepository;
@@ -76,7 +77,7 @@ public class RouteServiceImpl implements RouteService {
 	public Route editRoute(Route route) {
 		
 		if(route == null)
-			return null;
+			throw new BadRequestException("Route cannot be updated to null");
 		
 		Route existingRoute = getRoute(route.getId());
 		
@@ -114,8 +115,12 @@ public class RouteServiceImpl implements RouteService {
 			}
 		}
 		
+		existingRoute.setNodes(route.getNodes());
+		existingRoute.setIdealStartTime(route.getIdealStartTime());
+		existingRoute.setDescription(route.getDescription());
+		
 		// then save the updated state of the route
-		return routeRepo.save(route);
+		return routeRepo.save(existingRoute);
 	}
 	
 	/*
