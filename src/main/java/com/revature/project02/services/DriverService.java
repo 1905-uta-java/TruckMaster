@@ -16,7 +16,7 @@ public interface DriverService {
 	public Driver addDriver(Driver d, Manager manager, String password);
 	public Driver addDriver(Driver d);
 	public Driver updateDriver(Driver driver);
-	public boolean mutchDriver(Driver d);
-	public boolean mutchDriver(Integer id);
+	public void mutchDriver(Driver d);
+	public void mutchDriver(Integer id);
 	
 }

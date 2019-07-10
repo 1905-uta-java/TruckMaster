@@ -17,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @Component
 @Entity
 @PrimaryKeyJoinColumn(name="USER_ID")
-@JsonIgnoreProperties({"manager", "routes"})
+@JsonIgnoreProperties({"manager", "routes", "passHash"})
 public class Driver extends User {
 	
 	@ManyToOne
