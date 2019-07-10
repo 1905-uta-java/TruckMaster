@@ -24,7 +24,7 @@ public class ManagerServiceTest {
 		Manager manager = new Manager();
 		manager.setUsername("johnny");
 		
-		mService.addManager(manager);
+		mService.addManager(manager, "");
 		
 		Manager manager2 = mService.getManagerByUsername("johnny");
 		
@@ -40,7 +40,7 @@ public class ManagerServiceTest {
 		Manager manager = new Manager();
 		manager.setUsername("johnny");
 		
-		Manager manager2 = mService.addManager(manager);
+		Manager manager2 = mService.addManager(manager, "");
 		manager2 = mService.getManagerById(manager2.getId());
 		mService.deleteManager(manager);
 		

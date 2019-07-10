@@ -13,6 +13,7 @@ import com.revature.project02.models.Manager;
 import com.revature.project02.models.Route;
 import com.revature.project02.repositories.ManagerRepository;
 import com.revature.project02.services.ManagerService;
+import com.revature.project02.util.HashUtil;
 
 @Service
 public class ManagerServiceImpl implements ManagerService {
@@ -52,7 +53,7 @@ public class ManagerServiceImpl implements ManagerService {
 
 	@Override
 	public Manager addManager(Manager manager, String password) {
-		manager.setPassHash(password);
+		manager.setPassHash(HashUtil.hashStr(password));
 		return mRepo.save(manager);
 	}
 

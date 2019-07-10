@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.project02.models.Driver;
@@ -46,10 +47,11 @@ public class DriverController {//class header
 	 * @throws ResourceNotFoundException - if manager is not found or exists
 	 */
 	@PostMapping(value= "/add-driver-managerid-{id}")
-	public ResponseEntity<Driver> addDriver(@PathVariable("id") Integer id, @RequestBody Driver driver) {
+	public ResponseEntity<Driver> addDriver(@PathVariable("id") Integer id, @RequestParam("driver") Driver driver, 
+			@RequestParam("password")String password) {
 		
 		Manager temp = mService.getManagerById(id);
-		return new ResponseEntity<>(dService.addDriver(driver, temp), HttpStatus.CREATED);
+		return new ResponseEntity<>(dService.addDriver(driver, temp, password), HttpStatus.CREATED);
 	}
 	
 	/**

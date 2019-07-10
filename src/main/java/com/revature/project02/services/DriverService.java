@@ -13,7 +13,7 @@ public interface DriverService {
 	public List<Driver> getDriversByManager(Manager manager);
 	public Driver getDriverById(Integer id);
 	public Driver getDriverByUsername(String username);
-	public Driver addDriver(Driver d, Manager manager);
+	public Driver addDriver(Driver d, Manager manager, String password);
 	public Driver addDriver(Driver d);
 	public Driver updateDriver(Driver driver);
 	public boolean mutchDriver(Driver d);

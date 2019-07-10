@@ -15,6 +15,7 @@ import com.revature.project02.models.User;
 import com.revature.project02.repositories.DriverRepository;
 import com.revature.project02.repositories.ManagerRepository;
 import com.revature.project02.services.DriverService;
+import com.revature.project02.util.HashUtil;
 
 @Service
 public class DriverServiceImpl implements DriverService {
@@ -40,11 +41,12 @@ public class DriverServiceImpl implements DriverService {
 	}
 
 	@Override
-	public Driver addDriver(Driver d, Manager manager) {
+	public Driver addDriver(Driver d, Manager manager, String password) {
 		if(d == null)
 			throw new BadRequestException("Driver not instantiated");
 	
 		d.setManager(manager);
+		d.setPassHash(HashUtil.hashStr(password));
 		return dRepo.save(d);
 	}
 	

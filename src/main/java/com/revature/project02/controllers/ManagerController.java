@@ -33,9 +33,10 @@ public class ManagerController {
 	private RouteService rService;
 	
 	/**
-	 * Description - Create a manager object and add a record to the Manager table in db
-	 * @param manager - manager object instantiated from json request body
-	 * @return - HttpStatus of created and json of the created manager when success, else failed.
+	 * 
+	 * @param manager
+	 * @param password
+	 * @return
 	 */
 	@PostMapping
 	public ResponseEntity<Manager> addManager(@RequestParam("manager") Manager manager, @RequestParam("password") String password) {
