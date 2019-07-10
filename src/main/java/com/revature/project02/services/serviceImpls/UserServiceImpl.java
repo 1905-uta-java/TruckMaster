@@ -69,12 +69,9 @@ public class UserServiceImpl implements UserService {
 		}
 
 		@Override
-		public boolean deleteUser(User u) {
-			try {
-				uRepo.delete(u);
-				return true;
-			} catch (IllegalArgumentException e) {
-				return false;
-			}
+		public void deleteUser(User u) {
+			if(u == null)
+				throw new BadRequestException("No such user.");
+			uRepo.delete(u);
 		}
 }
