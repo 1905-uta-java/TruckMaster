@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.revature.project02.models.Driver;
+import com.revature.project02.models.Manager;
 import com.revature.project02.models.Route;
 
 @Service
@@ -27,4 +29,8 @@ public interface RouteService {
 	 * didn't exist in the first place
 	 */
 	public Route deleteRoute(Integer routeId);
+	
+	public List<Route> getRoutesByManager(Manager manager);
+	public List<Route> getRoutesByDriver(Driver driver);
+	public List<Route> getAllRoutes();
 }
