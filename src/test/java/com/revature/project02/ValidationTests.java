@@ -161,4 +161,46 @@ public class ValidationTests {
 		assertTrue(ValidationUtil.validUsername("Valid_Username01"));
 	}
 
+	//validPhone tests
+	@Test
+	public void validPhoneTooManyDigits()
+	{
+		assertFalse(ValidationUtil.validPhone("12345678901"));
+	}
+	
+	@Test
+	public void validPhoneTooFewDigits()
+	{
+		assertFalse(ValidationUtil.validPhone("123456789"));
+	}
+	
+	@Test
+	public void validPhoneInvalidChars()
+	{
+		assertFalse(ValidationUtil.validPhone("))(f1042310349"));
+	}
+	
+	@Test
+	public void validPhoneOddSpacing()
+	{
+		assertFalse(ValidationUtil.validPhone("123  456789"));
+	}
+	
+	@Test
+	public void validPhoneBritish()
+	{
+		assertTrue(ValidationUtil.validPhone("702.358.3392"));
+	}
+	
+	@Test
+	public void validPhoneParenthetical()
+	{
+		assertTrue(ValidationUtil.validPhone("(702) 358-3392"));
+	}
+	
+	@Test
+	public void validPhonePlain()
+	{
+		assertTrue(ValidationUtil.validPhone("7023583392"));
+	}
 }
