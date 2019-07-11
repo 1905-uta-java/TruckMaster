@@ -17,6 +17,8 @@ import com.revature.project02.repositories.ManagerRepository;
 import com.revature.project02.repositories.UserRepository;
 import com.revature.project02.services.UserService;
 import com.revature.project02.util.AuthTokenUtil;
+import com.revature.project02.util.HashUtil;
+import com.revature.project02.util.ValidationUtil;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -130,6 +132,13 @@ public class UserServiceImpl implements UserService {
 			if(!this.isPriviledged(uat))
 				throw new UnauthorizedException("Unauthorized priviledge."); 
 			
+			if(!ValidationUtil.validUsername(u.getUsername())
+					|| !ValidationUtil.validEmail(u.getEmail())
+					|| !ValidationUtil.validPhone(u.getPhone())
+					|| u.getPassHash().length() != HashUtil.HASH_PASS_EXACT_LEN)
+				throw new BadRequestException("Invalid Data.");
+
+			
 			return uRepo.save(u);
 		}
 
@@ -152,6 +161,10 @@ public class UserServiceImpl implements UserService {
 			//Check if requesting user is themselves or if they are privileged
 			if(!user.equals(uRepo.findById(u.getId()).get()) && !this.isPriviledged(uat))
 				throw new UnauthorizedException("Unauthorized user. User does not match requested user or underpreviledged.");
+			
+			if(!ValidationUtil.validEmail(u.getEmail())
+				|| !ValidationUtil.validPhone(u.getPhone()))
+				throw new BadRequestException("Invalid input.");
 			
 			if ("class com.revature.project02.models.Driver".equals(u.getClass().toString())
 				&& "class com.revature.project02.models.Manager".equals(uat.getRole()))
@@ -182,6 +195,7 @@ public class UserServiceImpl implements UserService {
 			User u3 = u2.get();
 			u3.setEmail(u.getEmail());
 			u3.setPhone(u.getPhone());
+			
 			return uRepo.save(u3);
 			
 			//return null;
