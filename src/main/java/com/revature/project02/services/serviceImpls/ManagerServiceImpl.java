@@ -65,10 +65,16 @@ public class ManagerServiceImpl implements ManagerService {
 
 	@Override
 	public Manager addManager(Manager manager, String password) {
-		Optional<Manager> m = mRepo.findById(manager.getId());
 		
-		if(m.isPresent())
-			throw new BadRequestException("Manager already exists.");
+		if(manager == null)
+			throw new BadRequestException("New manager must not be null");
+		
+		if(manager.getId() != null) {
+			Optional<Manager> m = mRepo.findById(manager.getId());
+			
+			if(m.isPresent())
+				throw new BadRequestException("Manager already exists.");
+		}
 		
 		manager.setPassHash(HashUtil.hashStr(password));
 		return mRepo.save(manager);
