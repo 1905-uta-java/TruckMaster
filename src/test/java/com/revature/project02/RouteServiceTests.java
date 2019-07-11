@@ -1,6 +1,9 @@
 package com.revature.project02;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -12,11 +15,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.revature.project02.models.Manager;
 import com.revature.project02.models.Route;
 import com.revature.project02.models.RouteNode;
 import com.revature.project02.services.RouteService;
-import com.revature.project02.util.HashUtil;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -47,6 +48,8 @@ public class RouteServiceTests {
 		
 		savedRoute = routeService.getRoute(savedRoute.getId());
 		
+		routeService.deleteRoute(savedRoute.getId());
+		
 		if(savedRoute == null)
 			fail();
 		
@@ -69,8 +72,6 @@ public class RouteServiceTests {
 		}
 		
 		assertEquals(route.getIdealStartTime(), savedRoute.getIdealStartTime());
-		
-		routeService.deleteRoute(savedRoute.getId());
 	}
 	
 	@Test
@@ -92,6 +93,8 @@ public class RouteServiceTests {
 		
 		Route updatedRoute = routeService.editRoute(savedRoute);
 		
+		routeService.deleteRoute(updatedRoute.getId());
+		
 		List<RouteNode> savedNodes = savedRoute.getNodes();
 		savedNodes.sort((node1, node2) -> node1.getOrder() - node2.getOrder());
 		
@@ -105,8 +108,6 @@ public class RouteServiceTests {
 		}
 		
 		assertTrue(true);
-		
-		routeService.deleteRoute(updatedRoute.getId());
 	}
 	
 	@Test
@@ -130,6 +131,10 @@ public class RouteServiceTests {
 		
 		Route updatedRoute = routeService.editRoute(savedRoute);
 		
+		System.out.println("ham: " + updatedRoute.toString());
+		
+		routeService.deleteRoute(updatedRoute.getId());
+		
 		List<RouteNode> savedNodes = savedRoute.getNodes();
 		savedNodes.sort((node1, node2) -> node1.getOrder() - node2.getOrder());
 		
@@ -143,8 +148,6 @@ public class RouteServiceTests {
 		}
 		
 		assertTrue(true);
-		
-		routeService.deleteRoute(updatedRoute.getId());
 	}
 	
 	@Test
@@ -169,6 +172,10 @@ public class RouteServiceTests {
 		savedRoute.getNodes().set(2, nodeToEdit);
 		
 		Route updatedRoute = routeService.editRoute(savedRoute);
+	
+		
+		routeService.deleteRoute(updatedRoute.getId());
+		
 		
 		List<RouteNode> savedNodes = savedRoute.getNodes();
 		savedNodes.sort((node1, node2) -> node1.getOrder() - node2.getOrder());
@@ -183,7 +190,5 @@ public class RouteServiceTests {
 		}
 		
 		assertTrue(true);
-		
-		routeService.deleteRoute(updatedRoute.getId());
 	}
 }

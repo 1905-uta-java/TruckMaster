@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.revature.project02.exceptions.BadRequestException;
 import com.revature.project02.exceptions.ResourceNotFoundException;
 import com.revature.project02.exceptions.UnauthorizedException;
 import com.revature.project02.models.Driver;
@@ -118,6 +119,8 @@ public class RouteController {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		
 		Manager manager = mService.getManagerByRoute(route);
+		if(manager == null)
+			throw new BadRequestException("no manager owns this route");
 		
 		if(uat.getUserId().equals(manager.getId()) || "class com.revature.project02.models.Admin".equals(uat.getRole()))
 			return new ResponseEntity<>(routeService.editRoute(route), HttpStatus.OK);
