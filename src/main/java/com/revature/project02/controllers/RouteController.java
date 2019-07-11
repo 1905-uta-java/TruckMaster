@@ -101,33 +101,6 @@ public class RouteController {
 	}
 	
 	/**
-	 * Description - gets a route stub by id
-	 * @param id - id of the route
-	 * @param token - string representing the encrypted token
-	 * @return json of the stub
-	 * @throws UnauthorizedException
-	 */
-	@GetMapping(value = "/{id}/stub")
-	public ResponseEntity<Route> getRouteStubById(@PathVariable("id") Integer id, @RequestHeader("token") String token) {
-		//Unencrypt the token
-		UnencryptedAuthenticationToken uat = AuthTokenUtil.fromEncryptedAuthenticationToken(token);
-		if(uat == null) throw new UnauthorizedException("Unauthorized Access!");		
-		
-		Route route = routeService.getRoute(id);
-		
-		if(route == null)
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		
-		if(uat.getUserId().equals(route.getDriver().getId()) || uat.getUserId().equals(route.getManager().getId())
-				|| "class com.revature.project02.models.Admin".equals(uat.getRole()))
-		{
-			route.setNodes(null);
-			return new ResponseEntity<>(route, HttpStatus.OK);			
-		}
-		throw new UnauthorizedException("Unauthorized Access!");
-	}
-	
-	/**
 	 * Description - Update the requested route
 	 * @param route - json of the route being updated
 	 * @param token - string representation of the encrypted token
@@ -138,31 +111,17 @@ public class RouteController {
 	public ResponseEntity<Route> updateRoute(@RequestBody Route route, @RequestHeader("token") String token) {
 		//Unencrypt the token
 		UnencryptedAuthenticationToken uat = AuthTokenUtil.fromEncryptedAuthenticationToken(token);
-		if(uat == null) throw new UnauthorizedException("Unauthorized Access!");		
+		if(uat == null)
+			throw new UnauthorizedException("Unauthorized Access!");		
 		
 		if(route == null)
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-
-		if(uat.getUserId().equals(route.getManager().getId())
-			|| "class com.revature.project02.models.Admin".equals(uat.getRole()))
-		{
-			//Sorry about the extra db call
-			Route original = routeService.getRoute(route.getId());
-			if(original == null) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-			original.setDescription(route.getDescription());
-			original.setIdealStartTime(route.getIdealStartTime());
-			if(route.getDriver() != null) original.setDriver(route.getDriver());
-			if(route.getManager() != null) original.setManager(route.getManager());
-			original.setNodes(route.getNodes());
-			
-			Route updatedRoute = routeService.editRoute(original);
-			
-			if(updatedRoute == null)
-				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-			
-			return new ResponseEntity<>(updatedRoute, HttpStatus.OK);
-		}
-
+		
+		Manager manager = mService.getManagerByRoute(route);
+		
+		if(uat.getUserId().equals(manager.getId()) || "class com.revature.project02.models.Admin".equals(uat.getRole()))
+			return new ResponseEntity<>(routeService.editRoute(route), HttpStatus.OK);
+		
 		throw new UnauthorizedException("Unauthorized Access!");
 	}
 	
@@ -175,22 +134,18 @@ public class RouteController {
 	 */
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<Route> deleteRoute(@PathVariable("id") Integer id, @RequestHeader("token") String token) {
+		
 		//Unencrypt the token
 		UnencryptedAuthenticationToken uat = AuthTokenUtil.fromEncryptedAuthenticationToken(token);
-		if(uat == null) throw new UnauthorizedException("Unauthorized Access!");		
+		
+		if(uat == null)
+			throw new UnauthorizedException("Unauthorized Access!");		
 
 		//sorry about the excess call.
 		Route route = routeService.getRoute(id);
-		if(uat.getUserId().equals(route.getManager().getId())
-				|| "class com.revature.project02.models.Admin".equals(uat.getRole()))
-		{
-			route = routeService.deleteRoute(id);
-			
-			if(route == null)
-				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-			
-			return new ResponseEntity<>(route, HttpStatus.OK);
-		}
+		if(uat.getUserId().equals(route.getManager().getId()) || "class com.revature.project02.models.Admin".equals(uat.getRole()))
+			return new ResponseEntity<>(routeService.deleteRoute(id), HttpStatus.OK);
+		
 		throw new UnauthorizedException("Unauthorized Access!");
 	}
 	
