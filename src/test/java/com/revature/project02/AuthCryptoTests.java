@@ -48,14 +48,14 @@ public class AuthCryptoTests {
 	public void removePKCS7InvalidPadlen() throws BadPaddingException
 	{
 		String shortUnpad = "unpad";
-		AuthCryptoUtil.removePKCS7(shortUnpad, 0);
+		AuthCryptoUtil.removePKCS7(shortUnpad);
 	}
 	
 	@Test(expected=javax.crypto.BadPaddingException.class)
 	public void removePKCS7Unpadded() throws BadPaddingException
 	{
 		String shortUnpad = "unpad";
-		AuthCryptoUtil.removePKCS7(shortUnpad, 16);
+		AuthCryptoUtil.removePKCS7(shortUnpad);
 	}
 	
 	@Test
@@ -64,7 +64,7 @@ public class AuthCryptoTests {
 		String nolenUnpad = "wordwordwordword"; // 16 chars
 		try {
 			String pad = AuthCryptoUtil.appendPKCS7(nolenUnpad, 16);
-			assertTrue(nolenUnpad.equals(AuthCryptoUtil.removePKCS7(pad, 16)));
+			assertTrue(nolenUnpad.equals(AuthCryptoUtil.removePKCS7(pad)));
 		} catch (BadPaddingException e) {
 			e.printStackTrace();
 		}
@@ -76,7 +76,7 @@ public class AuthCryptoTests {
 		String nolenUnpad = "wordwordwordwordword"; // 20 chars
 		try {
 			String pad = AuthCryptoUtil.appendPKCS7(nolenUnpad, 16);
-			assertTrue(nolenUnpad.equals(AuthCryptoUtil.removePKCS7(pad, 16)));
+			assertTrue(nolenUnpad.equals(AuthCryptoUtil.removePKCS7(pad)));
 		} catch (BadPaddingException e) {
 			e.printStackTrace();
 		}
