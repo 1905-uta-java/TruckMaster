@@ -18,6 +18,6 @@ public interface ManagerService {
 	public Manager getManagerByUsername(String username);
 	public Manager addManager(Manager manager, String password);
 	public Manager updateManager(Manager manager);
-	public boolean deleteManager(Manager manager);
-	public boolean deleteManager(Integer id);
+	public void deleteManager(Manager manager);
+	public void deleteManager(Integer id);
 }

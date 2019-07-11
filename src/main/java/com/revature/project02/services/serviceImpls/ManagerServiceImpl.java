@@ -24,7 +24,12 @@ public class ManagerServiceImpl implements ManagerService {
 
 	@Override
 	public List<Manager> getAllManagers() {
-		return mRepo.findAll();
+		List<Manager> temp = mRepo.findAll();
+		
+		if(temp == null)
+			throw new ResourceNotFoundException("Cannot find any instances of a manager");
+		
+		return temp;
 	}
 
 	@Override
@@ -48,7 +53,14 @@ public class ManagerServiceImpl implements ManagerService {
 
 	@Override
 	public Manager getManagerByDriver(Driver driver) {
-		return mRepo.getManagerByDrivers(driver);
+		if(driver == null)
+			throw new BadRequestException("The inputted driver cannot be instantiated.");
+		
+		Manager temp = mRepo.getManagerByDrivers(driver);
+		
+		if(temp == null)
+			throw new ResourceNotFoundException("No such manager for this driver.");
+		return temp;
 	}
 
 	@Override
@@ -58,13 +70,11 @@ public class ManagerServiceImpl implements ManagerService {
 	}
 
 	@Override
-	public boolean deleteManager(Manager manager) {
-		try {
-			mRepo.delete(manager);
-			return true;
-		} catch (IllegalArgumentException e) {
-			return false;
-		}
+	public void deleteManager(Manager manager) {
+		if(manager == null)
+			throw new BadRequestException("Manager could not be instantiated.");
+		mRepo.delete(manager);
+		
 	}
 	
 	public Manager updateManager(Manager manager) {
@@ -72,13 +82,12 @@ public class ManagerServiceImpl implements ManagerService {
 	}
 
 	@Override
-	public boolean deleteManager(Integer id) {
-		try {
-			mRepo.deleteById(id);
-			return true;
-		} catch (IllegalArgumentException e) {
-			return false;
-		}
+	public void deleteManager(Integer id) {
+		Optional<Manager> temp = mRepo.findById(id);
+		if(!temp.isPresent())
+			throw new BadRequestException("Invalid id");
+		
+		mRepo.delete(temp.get());
 	}
 
 	@Override

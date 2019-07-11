@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -65,6 +66,18 @@ public class UserController { //class header
 	public User updateUser(@PathVariable("id") Integer id, @RequestBody User u) {
 		return userService.updateUser(u);
 		
+	}
+	
+	/**
+	 * Description - Deletes the requested user
+	 * @param id - Integer representation of the user's id
+	 * @return - An httpstatus of ok, else it will throw a BadRequestException
+	 * @throws BadRequestException - if the user cannot be found
+	 */
+	@DeleteMapping(value= "/userid-{id}")
+	public HttpStatus deleteUser(@PathVariable("id") Integer id){
+		userService.deleteUser(userService.getUserById(id));
+		return HttpStatus.OK;
 	}
 	
 	

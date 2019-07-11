@@ -25,14 +25,17 @@ public class DriverServiceImpl implements DriverService {
 	private DriverRepository dRepo;
 	
 	/**
-	 * Description - Returns a list of all drivers in the Drivers rable
-	 * @throws - nothing.
+	 * Description - Returns a list of all drivers in the Drivers table
+	 * @throws - ResourceNotFoundException - if there are no drivers returned
 	 */
 	@Override
 	public List<Driver> getAllDrivers() {
-		return dRepo.findAll();
+		List<Driver> temp = dRepo.findAll();
+		if(temp == null)
+			throw new ResourceNotFoundException("No drivers found.");
+		return temp;
 	}
-
+	
 	@Override
 	public Driver getDriverById(Integer id) {
 		Optional<Driver> result = dRepo.findById(id);
@@ -56,13 +59,10 @@ public class DriverServiceImpl implements DriverService {
 	}
 
 	@Override
-	public boolean mutchDriver(Driver d) {
-		try {
-			dRepo.delete(d);
-			return true;
-		} catch (IllegalArgumentException e) {
-			return false;
-		}
+	public void mutchDriver(Driver d) {
+		if(d == null)
+			throw new BadRequestException("Driver could not be instantiated.");
+		dRepo.delete(d);
 	}
 	
 	/**
@@ -88,18 +88,18 @@ public class DriverServiceImpl implements DriverService {
 	@Override
 	public Driver getDriverByUsername(String username) {
 		Driver result = dRepo.getDriverByUsername(username);
-		
+		if(result == null)
+			throw new ResourceNotFoundException("No such driver with: " + username + " username.");
 		return result;
 	}
 
 	@Override
-	public boolean mutchDriver(Integer id) {
-		try {
-			dRepo.deleteById(id);
-			return true;
-		} catch (IllegalArgumentException e) {
-			return false;
-		}
+	public void mutchDriver(Integer id) {
+		Optional<Driver> temp = dRepo.findById(id);
+		if(!temp.isPresent())
+			throw new BadRequestException("Invalid id");
+		
+		dRepo.delete(temp.get());
 	}
 	
 

@@ -63,6 +63,12 @@ public class RouteController {
 		return new ResponseEntity<>(route, HttpStatus.OK);
 	}
 	
+	/**
+	 * Description - Update the requested route
+	 * @param route - json of the route being updated
+	 * @return - the json of the updated route
+	 * @throws - nothing
+	 */
 	@PutMapping
 	public ResponseEntity<Route> updateRoute(@RequestBody Route route) {
 		
@@ -77,6 +83,12 @@ public class RouteController {
 		return new ResponseEntity<>(updatedRoute, HttpStatus.OK);
 	}
 	
+	/**
+	 * Description - Delete the requested route
+	 * @param id - Integer representation of the route id of the route being deleted
+	 * @return - The json of the deleted route.
+	 * @throws - nothing
+	 */
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<Route> deleteRoute(@PathVariable("id") Integer id) {
 		
