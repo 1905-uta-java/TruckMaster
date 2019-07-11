@@ -47,7 +47,12 @@ public class DriverServiceImpl implements DriverService {
 	public Driver addDriver(Driver d, Manager manager, String password) {
 		if(d == null)
 			throw new BadRequestException("Driver not instantiated");
-	
+		
+		Optional<Driver> driver = dRepo.findById(d.getId());
+		
+		if(driver.isPresent())
+			throw new BadRequestException("Driver already exists.");
+		
 		d.setManager(manager);
 		d.setPassHash(HashUtil.hashStr(password));
 		return dRepo.save(d);

@@ -3,6 +3,7 @@ package com.revature.project02.services;
 
 import java.util.List;
 
+import com.revature.project02.models.UnencryptedAuthenticationToken;
 import com.revature.project02.models.User;
 
 /**
@@ -12,11 +13,12 @@ import com.revature.project02.models.User;
  */
 public interface UserService {
 	
-	public List<User> getAllUsers();
+	public List<User> getAllUsers(UnencryptedAuthenticationToken uat);
+	public User getUserByName(String username, UnencryptedAuthenticationToken uat);
 	public User getUserByName(String username);
-	public User getUserById(Integer id);
-	public User addUser(User u);
-	public User updateUser(User u);
-	public void deleteUser(User u);
+	public User getUserById(Integer id, UnencryptedAuthenticationToken uat);
+	public User addUser(User u, UnencryptedAuthenticationToken uat);
+	public User updateUser(User u, UnencryptedAuthenticationToken uat);
+	public void deleteUser(User u, UnencryptedAuthenticationToken uat);
 
 }

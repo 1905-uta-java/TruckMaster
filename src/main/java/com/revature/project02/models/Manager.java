@@ -54,4 +54,6 @@ public class Manager extends User {
 		return "Manager [getId()=" + getId() + ", getUsername()=" + getUsername()
 				+ ", getEmail()=" + getEmail() + ", getPhone()=" + getPhone() + "]";
 	}
+	
+	
 }

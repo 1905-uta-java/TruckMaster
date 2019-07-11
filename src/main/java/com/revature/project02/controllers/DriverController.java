@@ -75,7 +75,7 @@ public class DriverController {//class header
 	 */
 	@GetMapping(value = "/get-all-drivers-managerid-{id}")
 	public ResponseEntity<List<Driver>> getAllDrivers(@PathVariable("id") Integer id){
-		return new ResponseEntity<>(dService.getDriversByManager(mService.getManagerById(id)), HttpStatus.FOUND);
+		return new ResponseEntity<>(dService.getDriversByManager(mService.getManagerById(id)), HttpStatus.OK);
 	}
 	
 	/**
@@ -85,7 +85,7 @@ public class DriverController {//class header
 	 */
 	@GetMapping
 	public ResponseEntity<List<Driver>> getAllDrivers(){
-		return new ResponseEntity<>(dService.getAllDrivers(), HttpStatus.FOUND);
+		return new ResponseEntity<>(dService.getAllDrivers(), HttpStatus.OK);
 	}
 	
 	/**

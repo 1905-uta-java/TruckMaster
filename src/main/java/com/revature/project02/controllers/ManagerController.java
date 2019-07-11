@@ -70,7 +70,7 @@ public class ManagerController {
 	 */
 	@GetMapping(value="/get-manager-driver-{id}")
 	public ResponseEntity<Manager> getDriverManager(@PathVariable("id") Integer id){
-		return new ResponseEntity<>(mService.getManagerByDriver(dService.getDriverById(id)), HttpStatus.FOUND);
+		return new ResponseEntity<>(mService.getManagerByDriver(dService.getDriverById(id)), HttpStatus.OK);
 	}
 	
 	/**
@@ -80,7 +80,7 @@ public class ManagerController {
 	 */
 	@GetMapping
 	public ResponseEntity<List<Manager>> getAllManagers(){
-		return new ResponseEntity<>(mService.getAllManagers(), HttpStatus.FOUND);
+		return new ResponseEntity<>(mService.getAllManagers(), HttpStatus.OK);
 	}
 	
 	/**
