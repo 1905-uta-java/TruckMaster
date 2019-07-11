@@ -55,16 +55,16 @@ public class UserController { //class header
 		if (u==null) return new ResponseEntity(HttpStatus.BAD_REQUEST);
 		if("class com.revature.project02.models.Driver".equals(uat.getRole()))
 		{
-			if(u.getId()==uat.getUserId()) return new ResponseEntity<User>(u,HttpStatus.OK);
+			if(u.getId().equals(uat.getUserId())) return new ResponseEntity<User>(u,HttpStatus.OK);
 			else throw new UnauthorizedException("Unauthorized Access.");
 		}
 		else if("class com.revature.project02.models.Manager".equals(uat.getRole()))
 		{
-			if(u.getId()==uat.getUserId()) return new ResponseEntity<User>(u,HttpStatus.OK);
+			if(u.getId().equals(uat.getUserId())) return new ResponseEntity<User>(u,HttpStatus.OK);
 			if("class com.revature.project02.models.Driver".equals(u.getClass().toString()))
 			{
 				Driver d = (Driver) u;
-				if(uat.getUserId() == d.getManager().getId()) return new ResponseEntity<User>(u,HttpStatus.OK);
+				if(uat.getUserId().equals(d.getManager().getId())) return new ResponseEntity<User>(u,HttpStatus.OK);
 			}
 			else throw new UnauthorizedException("Unauthorized Access.");
 		}
@@ -96,16 +96,16 @@ public class UserController { //class header
 		if (u==null) return new ResponseEntity(HttpStatus.BAD_REQUEST);
 		if("class com.revature.project02.models.Driver".equals(uat.getRole()))
 		{
-			if(u.getId()==uat.getUserId()) return new ResponseEntity<User>(u,HttpStatus.OK);
+			if(u.getId().equals(uat.getUserId())) return new ResponseEntity<User>(u,HttpStatus.OK);
 			else throw new UnauthorizedException("Unauthorized Access.");
 		}
 		else if("class com.revature.project02.models.Manager".equals(uat.getRole()))
 		{
-			if(u.getId()==uat.getUserId()) return new ResponseEntity<User>(u,HttpStatus.OK);
+			if(u.getId().equals(uat.getUserId())) return new ResponseEntity<User>(u,HttpStatus.OK);
 			if("class com.revature.project02.models.Driver".equals(u.getClass().toString()))
 			{
 				Driver d = (Driver) u;
-				if(uat.getUserId() == d.getManager().getId()) return new ResponseEntity<User>(u,HttpStatus.OK);
+				if(uat.getUserId().equals(d.getManager().getId())) return new ResponseEntity<User>(u,HttpStatus.OK);
 			}
 			else throw new UnauthorizedException("Unauthorized Access.");
 		}
@@ -137,16 +137,16 @@ public class UserController { //class header
 		if (u==null) throw new BadRequestException("No such user.");
 		if("class com.revature.project02.models.Driver".equals(uat.getRole()))
 		{
-			if(u.getId()==uat.getUserId()) occur = true;
+			if(u.getId().equals(uat.getUserId())) occur = true;
 			else throw new UnauthorizedException("Unauthorized Access.");
 		}
 		else if("class com.revature.project02.models.Manager".equals(uat.getRole()))
 		{
-			if(u.getId()==uat.getUserId()) occur = true;
+			if(u.getId().equals(uat.getUserId())) occur = true;
 			else if("class com.revature.project02.models.Driver".equals(u.getClass().toString()))
 			{
 				Driver d = (Driver) u;
-				if(uat.getUserId() == d.getManager().getId()) occur = true;
+				if(uat.getUserId().equals(d.getManager().getId())) occur = true;
 			}
 			else throw new UnauthorizedException("Unauthorized Access.");
 		}
@@ -178,16 +178,16 @@ public class UserController { //class header
 		if (u==null) throw new BadRequestException("No such user.");
 		if("class com.revature.project02.models.Driver".equals(uat.getRole()))
 		{
-			if(u.getId()==uat.getUserId()) occur = true;
+			if(u.getId().equals(uat.getUserId())) occur = true;
 			else throw new UnauthorizedException("Unauthorized Access.");
 		}
 		else if("class com.revature.project02.models.Manager".equals(uat.getRole()))
 		{
-			if(u.getId()==uat.getUserId()) occur = true;
+			if(u.getId().equals(uat.getUserId())) occur = true;
 			else if("class com.revature.project02.models.Driver".equals(u.getClass().toString()))
 			{
 				Driver d = (Driver) u;
-				if(uat.getUserId() == d.getManager().getId()) occur = true;
+				if(uat.getUserId().equals(d.getManager().getId())) occur = true;
 			}
 			else throw new UnauthorizedException("Unauthorized Access.");
 		}
