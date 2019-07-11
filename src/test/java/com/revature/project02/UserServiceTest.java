@@ -16,6 +16,7 @@ import com.revature.project02.models.User;
 import com.revature.project02.services.UserService;
 import com.revature.project02.services.serviceImpls.UserServiceImpl;
 import com.revature.project02.util.AuthTokenUtil;
+import com.revature.project02.util.HashUtil;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = TruckMasterRunner.class)
@@ -29,6 +30,9 @@ public class UserServiceTest {
 		User man = new Manager();
 		man.setId(5202);
 		man.setUsername("manager_poc2");
+		man.setEmail("valida@email.com");
+		man.setPassHash(HashUtil.hashStr("validPassword"));
+		man.setPhone("(702) 358-3395");
 		
 		String ip = "127.0.0.1";
 		Long curtime = System.currentTimeMillis();
@@ -38,7 +42,10 @@ public class UserServiceTest {
 		
 		User u = new User();
 		u.setUsername("Apples");
-		
+		u.setEmail("valid@email.com");
+		u.setPassHash(HashUtil.hashStr("validPassword"));
+		u.setPhone("(702) 158-3392");
+
 		u = user.addUser(u, uat);
 		
 		u.setUsername("Orange");

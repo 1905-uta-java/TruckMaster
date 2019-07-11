@@ -11,6 +11,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import com.revature.project02.models.Driver;
 import com.revature.project02.models.Manager;
 import com.revature.project02.services.ManagerService;
+import com.revature.project02.util.HashUtil;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = TruckMasterRunner.class)
@@ -22,13 +23,18 @@ public class ManagerServiceTest {
 	@Test
 	public void getManagerByUsername() {
 		Manager manager = new Manager();
-		manager.setUsername("johnny");
+		manager.setUsername("johnnyus");
+		manager.setId(2505);
+		manager.setEmail("validh@email.com");
+		manager.setPassHash(HashUtil.hashStr("Password1"));
+		manager.setPhone("(702) 358-1983");
+
 		
-		mService.addManager(manager, "Password1");
+		manager = mService.addManager(manager, "Password1");
 		
-		Manager manager2 = mService.getManagerByUsername("johnny");
+		Manager manager2 = mService.getManagerByUsername("johnnyus");
 		
-		mService.deleteManager(manager);
+		mService.deleteManager(manager2);
 		
 		assertEquals(manager.getId(), manager2.getId());
 		
@@ -38,11 +44,16 @@ public class ManagerServiceTest {
 	public void getManagerById() {
 		
 		Manager manager = new Manager();
-		manager.setUsername("johnny");
+		
+		manager.setUsername("johnnay");
+		manager.setId(2506);
+		manager.setEmail("validi@email.com");
+		manager.setPassHash(HashUtil.hashStr("validPassword"));
+		manager.setPhone("(702) 358-2295");
 		
 		Manager manager2 = mService.addManager(manager, "Password1");
 		manager2 = mService.getManagerById(manager2.getId());
-		mService.deleteManager(manager);
+		mService.deleteManager(manager2);
 		
 		assertEquals(manager.getUsername(), manager2.getUsername());
 	}

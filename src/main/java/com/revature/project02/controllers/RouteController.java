@@ -16,19 +16,27 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.revature.project02.exceptions.ResourceNotFoundException;
 import com.revature.project02.exceptions.UnauthorizedException;
 import com.revature.project02.models.Driver;
+import com.revature.project02.models.Manager;
 import com.revature.project02.models.Route;
 import com.revature.project02.models.UnencryptedAuthenticationToken;
+import com.revature.project02.models.User;
 import com.revature.project02.services.DriverService;
 import com.revature.project02.services.ManagerService;
 import com.revature.project02.services.RouteService;
+import com.revature.project02.services.UserService;
 import com.revature.project02.util.AuthTokenUtil;
 
 @CrossOrigin(origins = {"*"})
 @RestController
 @RequestMapping("/routes")
 public class RouteController {
+	
+	@Autowired
+	private UserService uService;
+	
 	@Autowired
 	private ManagerService mService;
 	
@@ -47,10 +55,22 @@ public class RouteController {
 	 */
 	@PostMapping
 	public ResponseEntity<Route> addRoute(@RequestBody Route route, @RequestHeader("token") String token) {
+		
 		//Unencrypt the token
 		UnencryptedAuthenticationToken uat = AuthTokenUtil.fromEncryptedAuthenticationToken(token);
-		if(uat == null) throw new UnauthorizedException("Unauthorized Access!");		
-		if("class.com.revature.project02.models.Manager".equals(uat.getRole()))	return new ResponseEntity<>(routeService.createRoute(route), HttpStatus.CREATED);
+		
+		if(uat == null)
+			throw new UnauthorizedException("Unauthorized Access!");	
+		
+		User managerUser = uService.getUserById(uat.getUserId(), uat);
+		
+		if(managerUser instanceof Manager) {
+			
+			route.setManager((Manager) managerUser);
+			
+			return new ResponseEntity<>(routeService.createRoute(route), HttpStatus.CREATED);
+		}
+		
 		throw new UnauthorizedException("Unauthorized Access!");
 	}
 	
@@ -126,7 +146,16 @@ public class RouteController {
 		if(uat.getUserId().equals(route.getManager().getId())
 			|| "class com.revature.project02.models.Admin".equals(uat.getRole()))
 		{
-			Route updatedRoute = routeService.editRoute(route);
+			//Sorry about the extra db call
+			Route original = routeService.getRoute(route.getId());
+			if(original == null) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			original.setDescription(route.getDescription());
+			original.setIdealStartTime(route.getIdealStartTime());
+			if(route.getDriver() != null) original.setDriver(route.getDriver());
+			if(route.getManager() != null) original.setManager(route.getManager());
+			original.setNodes(route.getNodes());
+			
+			Route updatedRoute = routeService.editRoute(original);
 			
 			if(updatedRoute == null)
 				return new ResponseEntity<>(HttpStatus.NOT_FOUND);

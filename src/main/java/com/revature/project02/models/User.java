@@ -42,10 +42,10 @@ public class User {
 	@Column(name = "PASS_HASH")
 	private String passHash;
 	
-	@Column(name = "EMAIL", unique = true)
+	@Column(name = "EMAIL")
 	private String email;
 	
-	@Column(name = "PHONE", unique = true)
+	@Column(name = "PHONE")
 	private String phone;
 	
 	public User() {
