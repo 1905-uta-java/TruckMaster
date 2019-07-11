@@ -46,12 +46,7 @@ public class ManagerServiceImpl implements ManagerService {
 		if(route == null)
 			throw new BadRequestException("The route specified could not be instantiated,");
 		
-		Manager temp = mRepo.getManagerByRoutes(route);
-		
-		if(temp == null)
-			throw new ResourceNotFoundException("This route does not have an assigned manager");
-		
-		return temp;
+		return mRepo.getManagerByRoutes(route);
 	}
 
 	@Override

@@ -15,6 +15,8 @@ import com.revature.project02.models.Route;
 import com.revature.project02.models.RouteNode;
 import com.revature.project02.repositories.RouteNodeRepository;
 import com.revature.project02.repositories.RouteRepository;
+import com.revature.project02.services.DriverService;
+import com.revature.project02.services.ManagerService;
 import com.revature.project02.services.RouteService;
 
 @Service
@@ -25,6 +27,12 @@ public class RouteServiceImpl implements RouteService {
 	
 	@Autowired
 	RouteNodeRepository nodeRepo;
+	
+	@Autowired
+	ManagerService mService;
+	
+	@Autowired
+	DriverService dService;
 	
 	/*
 	 * returns the newly created route
@@ -62,7 +70,7 @@ public class RouteServiceImpl implements RouteService {
 		
 		Optional<Route> result = routeRepo.findById(routeId);
 		if(!result.isPresent())
-			return null;
+			throw new ResourceNotFoundException("Route not found");
 		
 		Route route = result.get();
 		
@@ -150,10 +158,19 @@ public class RouteServiceImpl implements RouteService {
 			nodeRepo.delete(node);
 		}
 		
-		savedRoute.getManager().getRoutes().remove(savedRoute);
-		savedRoute.setManager(null);
-		if(savedRoute.getDriver() != null) {
-			savedRoute.getDriver().getRoutes().remove(savedRoute);
+		savedRoute.setNodes(new ArrayList<RouteNode>());
+		
+		Manager manager = mService.getManagerByRoute(savedRoute);
+		if(manager != null) {
+	 		manager.getRoutes().remove(savedRoute);
+			mService.updateManager(manager);
+			savedRoute.setManager(null);
+		}
+		
+		Driver driver = dService.getDriverByRoute(savedRoute);
+		if(driver != null) {
+			driver.getRoutes().remove(savedRoute);
+			dService.updateDriver(driver);
 			savedRoute.setDriver(null);
 		}
 		
