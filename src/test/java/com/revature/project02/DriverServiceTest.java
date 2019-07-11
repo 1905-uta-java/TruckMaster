@@ -47,9 +47,6 @@ public class DriverServiceTest {
 		driver.setUsername("johnnya");
 		driver2.setUsername("abbyab");
 		driver3.setUsername("marycd");
-		driver.setId(2502);
-		driver2.setId(2503);
-		driver3.setId(2504);
 
 		driver.setEmail("validc@email.com");
 		driver.setPassHash(HashUtil.hashStr("validPassword"));

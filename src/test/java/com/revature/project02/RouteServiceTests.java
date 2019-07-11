@@ -12,9 +12,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import com.revature.project02.models.Manager;
 import com.revature.project02.models.Route;
 import com.revature.project02.models.RouteNode;
 import com.revature.project02.services.RouteService;
+import com.revature.project02.util.HashUtil;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
