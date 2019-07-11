@@ -31,6 +31,11 @@ import com.revature.project02.services.ManagerService;
 import com.revature.project02.services.RouteService;
 import com.revature.project02.util.AuthTokenUtil;
 
+/**
+ * Description - Controller for manager requests
+ * @author mattD, joshuaV, wolfeM
+ * @version 07/09/2019
+ */
 @CrossOrigin(origins = {"*"})
 @RestController
 @RequestMapping("/manager")
