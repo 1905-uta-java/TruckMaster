@@ -84,7 +84,8 @@ public class AuthTokenUtil {
 	 */
 	public static boolean baseAuthenticate(UnencryptedAuthenticationToken uat, User user, String ip)
 	{
-		if (user == null) return false;
+		if (user == null || uat == null) return false;
+
 		if (!uat.getUserId().equals(user.getId())) return false;
 		// allowing way to bypass ip check, since APPARENTLY angular can't give me an IP the way I want
 		if (!"".equals(ip) && !uat.getIp().equals(ip)) return false; 

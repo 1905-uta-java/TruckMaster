@@ -16,6 +16,7 @@ import com.revature.project02.repositories.DriverRepository;
 import com.revature.project02.repositories.ManagerRepository;
 import com.revature.project02.services.DriverService;
 import com.revature.project02.util.HashUtil;
+import com.revature.project02.util.ValidationUtil;
 
 @Service
 public class DriverServiceImpl implements DriverService {
@@ -53,6 +54,13 @@ public class DriverServiceImpl implements DriverService {
 		if(driver.isPresent())
 			throw new BadRequestException("Driver already exists.");
 		
+		if(manager == null
+			|| !ValidationUtil.validUsername(d.getUsername())
+			|| !ValidationUtil.validPassword(password)
+			|| !ValidationUtil.validEmail(d.getEmail())
+			|| !ValidationUtil.validPhone(d.getPhone()))
+			throw new BadRequestException("Invalid data.");
+		
 		d.setManager(manager);
 		d.setPassHash(HashUtil.hashStr(password));
 		return dRepo.save(d);
@@ -60,6 +68,12 @@ public class DriverServiceImpl implements DriverService {
 	
 	@Override
 	public Driver addDriver(Driver d) {
+		if(ValidationUtil.validUsername(d.getUsername())
+				|| !ValidationUtil.validEmail(d.getEmail())
+				|| !ValidationUtil.validPhone(d.getPhone())
+				|| d.getPassHash().length() != HashUtil.HASH_PASS_EXACT_LEN)
+				throw new BadRequestException("Invalid data.");
+
 		return dRepo.save(d);
 	}
 
@@ -87,6 +101,11 @@ public class DriverServiceImpl implements DriverService {
 
 	@Override
 	public Driver updateDriver(Driver driver) {
+		if(ValidationUtil.validUsername(driver.getUsername())
+				|| !ValidationUtil.validEmail(driver.getEmail())
+				|| !ValidationUtil.validPhone(driver.getPhone()))
+				throw new BadRequestException("Invalid data.");
+
 		return dRepo.save(driver);
 	}
 

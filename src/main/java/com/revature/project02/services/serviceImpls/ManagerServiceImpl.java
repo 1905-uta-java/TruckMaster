@@ -14,6 +14,7 @@ import com.revature.project02.models.Route;
 import com.revature.project02.repositories.ManagerRepository;
 import com.revature.project02.services.ManagerService;
 import com.revature.project02.util.HashUtil;
+import com.revature.project02.util.ValidationUtil;
 
 @Service
 public class ManagerServiceImpl implements ManagerService {
@@ -65,10 +66,22 @@ public class ManagerServiceImpl implements ManagerService {
 
 	@Override
 	public Manager addManager(Manager manager, String password) {
-		Optional<Manager> m = mRepo.findById(manager.getId());
 		
-		if(m.isPresent())
-			throw new BadRequestException("Manager already exists.");
+		if(manager == null)
+			throw new BadRequestException("New manager must not be null");
+		
+		if(manager.getId() != null) {
+			Optional<Manager> m = mRepo.findById(manager.getId());
+			
+			if(m.isPresent())
+				throw new BadRequestException("Manager already exists.");
+		}
+		
+		if(!ValidationUtil.validUsername(manager.getUsername())
+				|| !ValidationUtil.validPassword(password)
+				|| !ValidationUtil.validEmail(manager.getEmail())
+				|| !ValidationUtil.validPhone(manager.getPhone()))
+			throw new BadRequestException("Invalid Data.");
 		
 		manager.setPassHash(HashUtil.hashStr(password));
 		return mRepo.save(manager);
@@ -83,6 +96,11 @@ public class ManagerServiceImpl implements ManagerService {
 	}
 	
 	public Manager updateManager(Manager manager) {
+		if(!ValidationUtil.validUsername(manager.getUsername())
+				|| !ValidationUtil.validEmail(manager.getEmail())
+				|| !ValidationUtil.validPhone(manager.getPhone()))
+			throw new BadRequestException("Invalid Data.");
+
 		return mRepo.save(manager);
 	}
 

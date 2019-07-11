@@ -155,6 +155,7 @@ public class AuthCryptoUtil {
 	 */
 	public static String encrypt(String encryptString)
 	{
+		if (encryptString == null) return null;
 		try
 		{
 			//Adding PKCS7 Padding
@@ -196,6 +197,7 @@ public class AuthCryptoUtil {
 	 */
 	public static String decrypt(String decryptString)
 	{
+		if (decryptString == null) return null;
 		try {
 			String[] datasplit = decryptString.split(((Character)splitChar).toString());
 			

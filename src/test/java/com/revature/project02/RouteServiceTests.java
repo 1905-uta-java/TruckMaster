@@ -24,7 +24,6 @@ public class RouteServiceTests {
 	private RouteService routeService;
 	
 	// createRoute() test
-	
 	@Test
 	public void createRouteTest() {
 		
