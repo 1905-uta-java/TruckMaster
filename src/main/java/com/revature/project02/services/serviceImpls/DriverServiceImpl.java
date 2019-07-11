@@ -68,10 +68,9 @@ public class DriverServiceImpl implements DriverService {
 	
 	@Override
 	public Driver addDriver(Driver d) {
-		if(ValidationUtil.validUsername(d.getUsername())
+		if(!ValidationUtil.validUsername(d.getUsername())
 				|| !ValidationUtil.validEmail(d.getEmail())
-				|| !ValidationUtil.validPhone(d.getPhone())
-				|| d.getPassHash().length() != HashUtil.HASH_PASS_EXACT_LEN)
+				|| !ValidationUtil.validPhone(d.getPhone()))
 				throw new BadRequestException("Invalid data.");
 
 		return dRepo.save(d);
@@ -101,7 +100,7 @@ public class DriverServiceImpl implements DriverService {
 
 	@Override
 	public Driver updateDriver(Driver driver) {
-		if(ValidationUtil.validUsername(driver.getUsername())
+		if(!ValidationUtil.validUsername(driver.getUsername())
 				|| !ValidationUtil.validEmail(driver.getEmail())
 				|| !ValidationUtil.validPhone(driver.getPhone()))
 				throw new BadRequestException("Invalid data.");

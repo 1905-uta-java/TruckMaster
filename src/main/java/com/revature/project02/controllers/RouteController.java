@@ -50,7 +50,7 @@ public class RouteController {
 		//Unencrypt the token
 		UnencryptedAuthenticationToken uat = AuthTokenUtil.fromEncryptedAuthenticationToken(token);
 		if(uat == null) throw new UnauthorizedException("Unauthorized Access!");		
-		if("class.com.revature.project02.models.Manager".equals(uat.getRole()))	return new ResponseEntity<>(routeService.createRoute(route), HttpStatus.CREATED);
+		if("class com.revature.project02.models.Manager".equals(uat.getRole()))	return new ResponseEntity<>(routeService.createRoute(route), HttpStatus.CREATED);
 		throw new UnauthorizedException("Unauthorized Access!");
 	}
 	
@@ -126,7 +126,16 @@ public class RouteController {
 		if(uat.getUserId().equals(route.getManager().getId())
 			|| "class com.revature.project02.models.Admin".equals(uat.getRole()))
 		{
-			Route updatedRoute = routeService.editRoute(route);
+			//Sorry about the extra db call
+			Route original = routeService.getRoute(route.getId());
+			if(original == null) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			original.setDescription(route.getDescription());
+			original.setIdealStartTime(route.getIdealStartTime());
+			if(route.getDriver() != null) original.setDriver(route.getDriver());
+			if(route.getManager() != null) original.setManager(route.getManager());
+			original.setNodes(route.getNodes());
+			
+			Route updatedRoute = routeService.editRoute(original);
 			
 			if(updatedRoute == null)
 				return new ResponseEntity<>(HttpStatus.NOT_FOUND);

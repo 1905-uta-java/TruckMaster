@@ -48,7 +48,7 @@ public class RouteServiceTests {
 		if(savedRoute == null)
 			fail();
 		
-		if(!route.getDescription().contentEquals(savedRoute.getDescription()))
+		if(!route.getDescription().equals(savedRoute.getDescription()))
 			fail();
 		
 		if(savedRoute.getNodes() == null || savedRoute.getNodes().isEmpty())
