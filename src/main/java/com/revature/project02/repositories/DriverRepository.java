@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import com.revature.project02.models.Driver;
 import com.revature.project02.models.Manager;
+import com.revature.project02.models.Route;
 
 /**
  * Description - Interface for Driver table in db
@@ -39,5 +40,13 @@ public interface DriverRepository extends JpaRepository<Driver, Integer> {
 	 * @throws - NullPointerException npe - There is no such driver.
 	 */
 	public Driver getDriverByUsername(String username);
+	
+	/**
+	 * Description - Returns the driver associated with the given route
+	 * (if one exists
+	 * @param route
+	 * @return the given route's driver
+	 */
+	public Driver getDriverByRoutes(Route route);
 	
 }

@@ -135,33 +135,74 @@ public class RouteServiceImpl implements RouteService {
 		
 		// only attempts to perform the operation if the
 		// specified Route exists in the DB
-		if(routeRepo.existsById(routeId)) {
+		Optional<Route> result = routeRepo.findById(routeId);
+		
+		if(!result.isPresent())
+			throw new ResourceNotFoundException("Route not found");
+		
+		Route savedRoute = result.get();
+		List<RouteNode> nodes = new ArrayList<RouteNode>(savedRoute.getNodes());
+		
+		for(RouteNode node : nodes) {
 			
-			Route savedRoute = routeRepo.getOne(routeId);
-			routeRepo.delete(savedRoute);
-			return savedRoute;
+			savedRoute.getNodes().remove(node);
+			node.setRoute(null);
+			nodeRepo.delete(node);
 		}
 		
-		return null;
+		savedRoute.getManager().getRoutes().remove(savedRoute);
+		savedRoute.setManager(null);
+		if(savedRoute.getDriver() != null) {
+			savedRoute.getDriver().getRoutes().remove(savedRoute);
+			savedRoute.setDriver(null);
+		}
+		
+		routeRepo.delete(savedRoute);
+		return savedRoute;
 	}
 
 	@Override
 	public List<Route> getRoutesByManager(Manager manager) {
-		List<Route> temp = routeRepo.getRoutesByManager(manager);
-		if(temp == null)
+		List<Route> routes = routeRepo.getRoutesByManager(manager);
+		if(routes == null || routes.isEmpty())
 			throw new ResourceNotFoundException("No routes available");
-		return temp;
+		
+		for(Route route: routes) {
+			if(route.getNodes() != null && !route.getNodes().isEmpty())
+				route.getNodes().sort((node1, node2) -> node1.getOrder() - node2.getOrder());
+		}
+		
+		return routes;
 	}
 
 	@Override
 	public List<Route> getRoutesByDriver(Driver driver) {
-		List<Route> temp = routeRepo.getRoutesByDriver(driver);
-		if(temp == null)
+		
+		List<Route> routes = routeRepo.getRoutesByDriver(driver);
+		if(routes == null || routes.isEmpty())
 			throw new ResourceNotFoundException("No routes available");
-		return temp;
+		
+		for(Route route: routes) {
+			if(route.getNodes() != null && !route.getNodes().isEmpty())
+				route.getNodes().sort((node1, node2) -> node1.getOrder() - node2.getOrder());
+		}
+		
+		return routes;
 	}
 
 	@Override
 	public List<Route> getAllRoutes() {
-		return routeRepo.findAll();	}
+		
+		List<Route> routes = routeRepo.findAll();
+		
+		if(routes == null || routes.isEmpty())
+			throw new ResourceNotFoundException("No routes available");
+		
+		for(Route route: routes) {
+			if(route.getNodes() != null && !route.getNodes().isEmpty())
+				route.getNodes().sort((node1, node2) -> node1.getOrder() - node2.getOrder());
+		}
+		
+		return routes;
+	}
 }

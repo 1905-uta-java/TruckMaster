@@ -115,6 +115,11 @@ public class DriverServiceImpl implements DriverService {
 			throw new ResourceNotFoundException("No such driver with: " + username + " username.");
 		return result;
 	}
+	
+	public Driver getDriverByRoute(Route route) {
+		
+		return dRepo.getDriverByRoutes(route);
+	}
 
 	@Override
 	public void mutchDriver(Integer id) {
@@ -124,6 +129,4 @@ public class DriverServiceImpl implements DriverService {
 		
 		dRepo.delete(temp.get());
 	}
-	
-
 }
