@@ -20,6 +20,11 @@ import com.revature.project02.util.AuthTokenUtil;
 import com.revature.project02.util.HashUtil;
 import com.revature.project02.util.ValidationUtil;
 
+/**
+ * @author Wolfe Magnus <wsm@efoe.com>
+ * @version 1.0
+ * @since 1.0
+ */
 @CrossOrigin(origins = {"*"})
 @RestController
 @RequestMapping("/authenticate")
@@ -43,6 +48,14 @@ public class AuthTokenController {
 	@Autowired
 	private UserService userService;
 	
+	/**
+	 * getAuthenticationToken: Manufactures an authentication token if user/pass combo is valid
+	 * @param username - username from request
+	 * @param password - password from request
+	 * @param request - the request
+	 * @return AuthWrapper - the wrapper containing a token and the user information that is more or less publicly available for that user
+	 * @throws InvalidAuthenticationException if user/pass combo is invalid in any way
+	 */
 	@PostMapping
 	public AuthWrapper getAuthenticationToken(@RequestParam(name="username") String username, @RequestParam(name="password") String password, HttpServletRequest request)
 	{

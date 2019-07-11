@@ -7,6 +7,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.project02.models.UnencryptedAuthenticationToken;
 import com.revature.project02.models.User;
 
+/**
+ * @author Wolfe Magnus <wsm@efoe.com>
+ * @version 1.0
+ * @since 1.0
+ */
 public class AuthTokenUtil {
 
 	// 15 Minutes as milliseconds: 15*60*1000 = 15*6000
@@ -15,6 +20,11 @@ public class AuthTokenUtil {
 	
 	private static ObjectMapper omapper = new ObjectMapper();
 	
+	/**
+	 * fromEncryptedAuthenticationToken: Decrypts an encrypted Authentication Token and turns it to an UnencryptedAuthenticationToken. 
+	 * @param eat - the encrypted authentication token to decrypt and parse
+	 * @return UnencryptedAuthenticationToken - the decrypted token
+	 */
 	public static UnencryptedAuthenticationToken fromEncryptedAuthenticationToken(String eat)
 	{
 		AuthCryptoUtil.init();
@@ -31,6 +41,11 @@ public class AuthTokenUtil {
 		return ret;
 	}
 	
+	/**
+	 * toEncryptedAuthenticationToken: Encrypts an UnencryptedAuthenticationToken.
+	 * @param uat - the UnencryptedAuthenticationToken to encrypt
+	 * @return String - the Base64 representation of the encrypted token
+	 */
 	public static String toEncryptedAuthenticationToken(UnencryptedAuthenticationToken uat)
 	{
 		AuthCryptoUtil.init();
@@ -47,6 +62,11 @@ public class AuthTokenUtil {
 		return eatAsString;
 	}
 	
+	/**
+	 * authTokenTimedOut: Determines if an auth token has timed out.
+	 * @param uat - the auth token to test
+	 * @return boolean - true if timed out, false if not.
+	 */
 	public static boolean authTokenTimedOut(UnencryptedAuthenticationToken uat)
 	{
 		Long current = System.currentTimeMillis();
@@ -55,9 +75,17 @@ public class AuthTokenUtil {
 		return false;
 	}
 
+	/**
+	 * baseAuthenticate: handles as much classless authentication comparison as possible. Has work around for Angular being the only client-side endpoint visible.
+	 * @param uat - The UnencryptedAuthenticationToken to authenticate against
+	 * @param user - The User to authenticate
+	 * @param ip - The ip to do comparison on. Use the empty string ("") to avoid ip validation (as much as it pains me to do so)
+	 * @return boolean - true if authentication is valid, false if invalid
+	 */
 	public static boolean baseAuthenticate(UnencryptedAuthenticationToken uat, User user, String ip)
 	{
 		if (user == null || uat == null) return false;
+
 		if (!uat.getUserId().equals(user.getId())) return false;
 		// allowing way to bypass ip check, since APPARENTLY angular can't give me an IP the way I want
 		if (!"".equals(ip) && !uat.getIp().equals(ip)) return false; 
@@ -69,6 +97,13 @@ public class AuthTokenUtil {
 	}
 	
 	//Man, I hope nobody moves these classes.
+	/**
+	 * adminAuthenticate: Handles admin-specific authentication.
+	 * @param uat - the UnencryptedAuthenticationToken to authenticate against
+	 * @param user - the user to authenticate
+	 * @param ip - the ip to compare. see @see AuthTokenUtil.baseAuthenticate for workaround for angular
+	 * @return boolean - true if authentication is valid, false if invalid
+	 */
 	public static boolean adminAuthenticate(UnencryptedAuthenticationToken uat, User user, String ip)
 	{
 		if(!baseAuthenticate(uat,user,ip)) return false;
@@ -76,6 +111,13 @@ public class AuthTokenUtil {
 		return true;
 	}
 	
+	/**
+	 * managerAuthenticate: Handles manager-specific authentication.
+	 * @param uat - the UnencryptedAuthenticationToken to authenticate against
+	 * @param user - the user to authenticate
+	 * @param ip - the ip to compare. see @see AuthTokenUtil.baseAuthenticate for workaround for angular
+	 * @return boolean - true if authentication is valid, false if invalid
+	 */
 	public static boolean managerAuthenticate(UnencryptedAuthenticationToken uat, User user, String ip)
 	{
 		if(!baseAuthenticate(uat,user,ip)) return false;
@@ -83,6 +125,13 @@ public class AuthTokenUtil {
 		return true;
 	}
 	
+	/**
+	 * driverAuthenticate: Handles driver-specific authentication.
+	 * @param uat - the UnencryptedAuthenticationToken to authenticate against
+	 * @param user - the user to authenticate
+	 * @param ip - the ip to compare. see @see AuthTokenUtil.baseAuthenticate for workaround for angular
+	 * @return boolean - true if authentication is valid, false if invalid
+	 */
 	public static boolean driverAuthenticate(UnencryptedAuthenticationToken uat, User user, String ip)
 	{
 		if(!baseAuthenticate(uat,user,ip)) return false;

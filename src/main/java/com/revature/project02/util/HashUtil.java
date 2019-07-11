@@ -4,10 +4,20 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+/**
+ * @author Wolfe Magnus <wsm@efoe.com>
+ * @version 1.0
+ * @since 1.0
+ */
 public class HashUtil {
 
 	public static final int HASH_PASS_EXACT_LEN = 64;
 	
+	/**
+	 * hashStr: Hashes a string to SHA256 and provides a 64 character long hexadecimal representation of the hashed value as a string
+	 * @param unhashedStr - the string to hash
+	 * @return String - the hashed value, in hex, as a string.
+	 */
 	public static String hashStr(String unhashedStr) {
 		try {
 			MessageDigest digest = MessageDigest.getInstance("SHA-256");
