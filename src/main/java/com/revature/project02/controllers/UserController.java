@@ -11,14 +11,18 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.revature.project02.exceptions.UnauthorizedException;
 import com.revature.project02.models.Admin;
 import com.revature.project02.models.Driver;
 import com.revature.project02.models.Manager;
+import com.revature.project02.models.UnencryptedAuthenticationToken;
 import com.revature.project02.models.User;
 import com.revature.project02.services.UserService;
+import com.revature.project02.util.AuthTokenUtil;
 
 /**
  * Description - Controller that handles requests from the client relating to driver
@@ -39,8 +43,14 @@ public class UserController { //class header
 	 * @return - JSON object representing the user
 	 */
 	@GetMapping(value="/userid-{id}")
-	public ResponseEntity<User> getUserProfile(@PathVariable("id") Integer id) {
-		User u = userService.getUserById(id);
+	public ResponseEntity<User> getUserProfile(@PathVariable("id") Integer id, @RequestHeader("token") String token) {
+		//Unencrypt the token
+		UnencryptedAuthenticationToken uat = AuthTokenUtil.fromEncryptedAuthenticationToken(token);
+		if(uat == null && AuthTokenUtil.authTokenTimedOut(uat))
+			throw new UnauthorizedException("Unauthorized Access!");
+		
+		//Execute getting user profile after authentication
+		User u = userService.getUserById(id, uat);
 		if(u == null)
 			return new ResponseEntity(HttpStatus.BAD_REQUEST);
 		
@@ -48,8 +58,14 @@ public class UserController { //class header
 	}
 	
 	@GetMapping(value="/username-{username}")
-	public ResponseEntity<User> getUserProfile(@PathVariable("username") String username) {
-		User u = userService.getUserByName(username);
+	public ResponseEntity<User> getUserProfile(@PathVariable("username") String username, @RequestHeader("token") String token) {
+		//Unencrypt the token
+		UnencryptedAuthenticationToken uat = AuthTokenUtil.fromEncryptedAuthenticationToken(token);
+		if(uat == null && AuthTokenUtil.authTokenTimedOut(uat))
+			throw new UnauthorizedException("Unauthorized Access!");
+		
+		//Execute getting user profile after authentication
+		User u = userService.getUserByName(username, uat);
 		if(u == null)
 			return new ResponseEntity(HttpStatus.BAD_REQUEST);
 		
@@ -63,8 +79,12 @@ public class UserController { //class header
 	 * @return - returns Accepted status code if success, else a bad request
 	 */
 	@PutMapping(value="/userid-{id}")
-	public User updateUser(@PathVariable("id") Integer id, @RequestBody User u) {
-		return userService.updateUser(u);
+	public User updateUser(@PathVariable("id") Integer id, @RequestBody User u, @RequestHeader("token") String token) {
+		//Unencrypt the token
+		UnencryptedAuthenticationToken uat = AuthTokenUtil.fromEncryptedAuthenticationToken(token);
+		if(uat == null && AuthTokenUtil.authTokenTimedOut(uat))
+			throw new UnauthorizedException("Unauthorized Access!");
+		return userService.updateUser(u, uat);
 		
 	}
 	
@@ -75,8 +95,14 @@ public class UserController { //class header
 	 * @throws BadRequestException - if the user cannot be found
 	 */
 	@DeleteMapping(value= "/userid-{id}")
-	public HttpStatus deleteUser(@PathVariable("id") Integer id){
-		userService.deleteUser(userService.getUserById(id));
+	public HttpStatus deleteUser(@PathVariable("id") Integer id, @RequestHeader("token") String token) {
+		//Unencrypt the token
+		UnencryptedAuthenticationToken uat = AuthTokenUtil.fromEncryptedAuthenticationToken(token);
+		if(uat == null && AuthTokenUtil.authTokenTimedOut(uat))
+			throw new UnauthorizedException("Unauthorized Access!");
+		
+		//Execute getting user profile after authentication
+		userService.deleteUser(userService.getUserById(id, uat), uat);
 		return HttpStatus.OK;
 	}
 	

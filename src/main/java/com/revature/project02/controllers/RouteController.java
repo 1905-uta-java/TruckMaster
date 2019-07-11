@@ -108,7 +108,7 @@ public class RouteController {
 	 */
 	@GetMapping(value="/get-routes-driver-{id}")
 	public ResponseEntity<List<Route>> getAllRoutesForDriver(@PathVariable("id") Integer id){
-		return new ResponseEntity<>(routeService.getRoutesByDriver(dService.getDriverById(id)), HttpStatus.FOUND);
+		return new ResponseEntity<>(routeService.getRoutesByDriver(dService.getDriverById(id)), HttpStatus.OK);
 	}
 	
 	/**
@@ -119,11 +119,11 @@ public class RouteController {
 	 */
 	@GetMapping(value = "/get-all-routes+managerid-{id}")
 	public ResponseEntity<List<Route>> getAllRoutesForManager(@PathVariable("id") Integer id) {
-		return new ResponseEntity<>(routeService.getRoutesByManager(mService.getManagerById(id)), HttpStatus.FOUND);
+		return new ResponseEntity<>(routeService.getRoutesByManager(mService.getManagerById(id)), HttpStatus.OK);
 	}
 	
 	@GetMapping
 	public ResponseEntity<List<Route>> getAllRoutes(){
-		return new ResponseEntity<>(routeService.getAllRoutes(), HttpStatus.FOUND);
+		return new ResponseEntity<>(routeService.getAllRoutes(), HttpStatus.OK);
 	}
 }

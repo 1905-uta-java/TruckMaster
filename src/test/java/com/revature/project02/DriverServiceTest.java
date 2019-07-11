@@ -52,7 +52,10 @@ public class DriverServiceTest {
 		dService.mutchDriver(driver2);
 		dService.mutchDriver(driver3);
 		
-		assertEquals(tempList.size(), 3);
+		List<Driver> tempList2 = dService.getAllDrivers();
+		int tempSize = tempList2.size() + 3;
+		
+		assertEquals(tempList.size(), tempSize);
 		
 	}
 	
