@@ -128,6 +128,12 @@ public class RouteController {
 		throw new UnauthorizedException("Unauthorized Access!");
 	}
 	
+	@PutMapping(value = "/assign/{id}")
+	public ResponseEntity<Route> assignDriverToRoute(@PathVariable("id") Integer driverId, @RequestBody Route route) {
+		
+		return new ResponseEntity<>(routeService.assignDriverToRoute(driverId, route), HttpStatus.OK);
+	}
+	
 	/**
 	 * Description - Delete the requested route
 	 * @param id - Integer representation of the route id of the route being deleted
