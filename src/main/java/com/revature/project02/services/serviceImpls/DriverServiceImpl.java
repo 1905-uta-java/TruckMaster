@@ -14,6 +14,7 @@ import com.revature.project02.models.Route;
 import com.revature.project02.models.User;
 import com.revature.project02.repositories.DriverRepository;
 import com.revature.project02.repositories.ManagerRepository;
+import com.revature.project02.repositories.RouteRepository;
 import com.revature.project02.services.DriverService;
 import com.revature.project02.util.HashUtil;
 import com.revature.project02.util.ValidationUtil;
@@ -24,6 +25,8 @@ public class DriverServiceImpl implements DriverService {
 	//class attributes
 	@Autowired
 	private DriverRepository dRepo;
+	@Autowired
+	private RouteRepository rRepo;
 	
 	/**
 	 * Description - Returns a list of all drivers in the Drivers table
@@ -116,9 +119,19 @@ public class DriverServiceImpl implements DriverService {
 		return result;
 	}
 	
-	public Driver getDriverByRoute(Route route) {
+	public Driver getDriverByRoute(Integer routeId) {
 		
-		return dRepo.getDriverByRoutes(route);
+		Optional<Route> r = rRepo.findById(routeId);
+		
+		if(!r.isPresent())
+			throw new BadRequestException("No such route.");
+		
+		Driver d = dRepo.getDriverByRoutes(r.get());
+		
+		if(d == null)
+			throw new ResourceNotFoundException("No such driver for that route.");
+		
+		return d;
 	}
 
 	@Override

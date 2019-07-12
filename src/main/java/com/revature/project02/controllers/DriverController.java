@@ -156,5 +156,27 @@ public class DriverController {//class header
 		throw new UnauthorizedException("Unauthorized Access!");
 	}
 	
+	@GetMapping(value="/get-driver-routeid-{id}")
+	public ResponseEntity<Driver> getDriverByRoute(@PathVariable("id") Integer routeId, @RequestHeader("token") String token){
+		boolean proceed = false;
+		UnencryptedAuthenticationToken uat = AuthTokenUtil.fromEncryptedAuthenticationToken(token);
+		if(uat == null) throw new UnauthorizedException("Unauthorized Access!");
+		if("class com.revature.project02.models.Admin".equals(uat.getRole()))
+		{
+			proceed = true;
+		}
+		else if("class com.revature.project02.models.Manager".equals(uat.getRole()))
+		{
+			proceed = true;
+		}
+		if (proceed) 
+		{
+			return new ResponseEntity<>(dService.getDriverByRoute(routeId), HttpStatus.OK);	
+		}
+		throw new UnauthorizedException("Unauthorized Access!");
+	}
+	
+	
+	
 	
 }//end of class

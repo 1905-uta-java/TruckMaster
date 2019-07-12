@@ -167,7 +167,7 @@ public class RouteServiceImpl implements RouteService {
 			savedRoute.setManager(null);
 		}
 		
-		Driver driver = dService.getDriverByRoute(savedRoute);
+		Driver driver = dService.getDriverByRoute(savedRoute.getId());
 		if(driver != null) {
 			driver.getRoutes().remove(savedRoute);
 			dService.updateDriver(driver);
