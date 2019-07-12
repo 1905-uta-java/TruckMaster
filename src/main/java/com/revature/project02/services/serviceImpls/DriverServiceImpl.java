@@ -129,7 +129,7 @@ public class DriverServiceImpl implements DriverService {
 		Driver d = dRepo.getDriverByRoutes(r.get());
 		
 		if(d == null)
-			throw new ResourceNotFoundException("No such driver for that route.");
+			return null;
 		
 		return d;
 	}
