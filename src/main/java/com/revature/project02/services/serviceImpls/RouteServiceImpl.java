@@ -222,4 +222,27 @@ public class RouteServiceImpl implements RouteService {
 		
 		return routes;
 	}
+
+	@Override
+	public Route assignDriverToRoute(Integer driverId, Route route) {
+		
+		if(route == null)
+			throw new BadRequestException("Route cannot be null");
+
+		if(driverId == null)
+			throw new BadRequestException("Driver cannot be null");
+		
+		Optional<Route> result = routeRepo.findById(route.getId());
+		
+		if(!result.isPresent())
+			throw new ResourceNotFoundException("Route not found");
+		
+		Route existingRoute = result.get();
+		
+		Driver existingDriver = dService.getDriverById(driverId);
+		
+		existingRoute.setDriver(existingDriver);
+		
+		return routeRepo.save(existingRoute);
+	}
 }

@@ -33,4 +33,6 @@ public interface RouteService {
 	public List<Route> getRoutesByManager(Manager manager);
 	public List<Route> getRoutesByDriver(Driver driver);
 	public List<Route> getAllRoutes();
+	
+	public Route assignDriverToRoute(Integer driverId, Route route);
 }
